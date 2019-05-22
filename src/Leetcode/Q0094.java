@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class Q0144 {
-    public List<Integer> preorderTraversal(TreeNode root) {
+public class Q0094 {
+    public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Stack<TreeNode> stack = new Stack<>();
-
         while (root != null || !stack.empty()) {
             if (root != null) {
-                res.add(root.val);
                 stack.push(root);
                 root = root.left;
             }
             else {
-                root = stack.pop().right;
+                root = stack.pop();
+                res.add(root.val);
+                root = root.right;
             }
         }
         return res;
