@@ -3,7 +3,7 @@ package Leetcode;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Q0226 {
+public class P0226_InvertBinaryTree {
 
     public TreeNode invertTree_recursive(TreeNode root) {
         if (root == null) {

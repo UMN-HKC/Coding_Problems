@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-public class Q0145 {
+public class P0145_PostorderTreeTraversal {
     public List<Integer> postorderTraversal(TreeNode root) {
         LinkedList<Integer> res = new LinkedList<>();
         Stack<TreeNode> stack = new Stack<>();

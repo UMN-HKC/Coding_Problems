@@ -1,6 +1,6 @@
 package Leetcode;
 
-public class Q0101 {
+public class P0101_IsSymmetric {
     public boolean isSymmetric(TreeNode root) {
         if (root == null) {
             return true;
