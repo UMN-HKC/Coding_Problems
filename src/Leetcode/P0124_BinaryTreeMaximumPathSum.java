@@ -6,7 +6,7 @@ public class P0124_BinaryTreeMaximumPathSum {
 
     // time: O(V+E)
     // space: O(h)
-    
+
     public int maxPathSum(TreeNode root) {
         int[] max = new int[1];
         if (root == null) return max[0];
