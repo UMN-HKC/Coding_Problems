@@ -4,9 +4,6 @@ import java.util.Arrays;
 
 public class P1081_LetterTilePossibilities {
 
-
-    // 
-
     public int numTilePossibilities(String tiles) {
         if (tiles == null || tiles.length() == 0) {
             return 0;
