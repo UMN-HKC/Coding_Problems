@@ -8,6 +8,9 @@ public class P0090_SubsetsII {
 
     // Initallly stuck at the condition to skip the index
     // idea borrowed from discussion board: (illustrated below)
+    // To solve this problem, it is helpful to first think how many subsets are there.
+    // If there is no duplicate element, the answer is simply 2^n, where n is the number of elements.
+    // This is because you have two choices for each element, either putting it into the subset or not.
 
     // time: O(2^n)
     // space: O(n)

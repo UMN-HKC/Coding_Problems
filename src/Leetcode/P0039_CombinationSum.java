@@ -7,9 +7,11 @@ public class P0039_CombinationSum {
 
     // initial approach: dfs
 
-    // time: O(C(n,k)) = O((n!/(k! * (n - k)!)) * k)
-    // here we multiply a k because each time we find an answer, we copy our result once
-    // space: O(k) = stack space
+    // time: O(2^n)
+    // T(n) = T(n - 1) + T(n - 2) + ... + T(1) = O(2^n)
+    // it is like a binary stream, each time we choose either 1 or 0
+
+    // space: O(n) = stack space
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();

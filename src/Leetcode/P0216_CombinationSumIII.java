@@ -7,8 +7,8 @@ public class P0216_CombinationSumIII {
 
     // initial approach: dfs
 
-    // time: O((9!/(k! * (9 - k)!)) * k)
-    // space: O(k)
+    // time: O((9!/(k! * (9 - k)!)) * k)   (select k numbers, slightly different from I and II)
+    // space: O(k)  stack space
 
     public List<List<Integer>> combinationSum3(int k, int n) {
         List<List<Integer>> res = new ArrayList<>();
