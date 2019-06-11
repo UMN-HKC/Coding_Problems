@@ -32,7 +32,7 @@ public class P0309_StockWithCooldown {
     }
 
     // space optimize: since state only relies on their previous states, we can use 3 state
-    // variables to keep track of all the states 
+    // variables to keep track of all the states
 
     // time: O(n)
     // space: O(1)
