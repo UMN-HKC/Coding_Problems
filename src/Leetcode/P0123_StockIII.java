@@ -82,8 +82,8 @@ public class P0123_StockIII {
         return dp[k];
     }
 
-    // approach2: state machine
-    
+    // approach2: state machine (need to look at it later)
+
     public int maxProfit_state_machine(int[] prices) {
         int hold1 = Integer.MIN_VALUE, hold2 = Integer.MIN_VALUE;
         int release1 = 0, release2 = 0;
