@@ -8,6 +8,8 @@ public class P0140_WordBreakII {
      *
      * need to revisit
      *
+     * https://www.youtube.com/watch?v=JqOIRBC0_9c&t=701s
+     *
      *  couldn't figure out, and took me quite some time to understand the solution
      *  basically dfs with memoization, top-down approach
      *  for a single string, we iterate through its index and for each index we divide the
