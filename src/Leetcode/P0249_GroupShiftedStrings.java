@@ -13,7 +13,7 @@ public class P0249_GroupShiftedStrings {
      * The special case is like "az" and "ba" where the second letter does not
      * match to key ('z'- 0 != 'a' - 1 where 0 and 1 are offsets for each string)
      * so once we have c < 'a', we add 26.
-     * 
+     *
      */
 
     public List<List<String>> groupStrings(String[] strings) {
