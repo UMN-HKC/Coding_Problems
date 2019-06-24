@@ -9,7 +9,7 @@ public class P0312_BurstBalloons {
 
     // time: O(n^3)
     // space: O(n^2)
-    
+
     public int maxCoins(int[] nums) {
         int n = nums.length;
         int[] paddedNums = new int[n+2];
