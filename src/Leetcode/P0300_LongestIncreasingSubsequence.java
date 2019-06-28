@@ -53,7 +53,7 @@ public class P0300_LongestIncreasingSubsequence {
     //  1 2
     //  1 3 6
     //  1 3 5 8
-    
+
     // time: O(nlogn)
     // space: O(n)
 
