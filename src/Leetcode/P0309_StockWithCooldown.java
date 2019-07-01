@@ -16,6 +16,7 @@ public class P0309_StockWithCooldown {
 
     // time: O(n)
     // space: O(n)
+
     public int maxProfit(int[] prices) {
         if (prices == null || prices.length == 0)   return 0;
         int[] hold = new int[prices.length + 1];
@@ -24,8 +25,12 @@ public class P0309_StockWithCooldown {
         hold[0] = -prices[0];
 
         for (int i = 1; i <= prices.length; i++) {
+            // hold[i] can represent buy stock on ith day or have bought the
+            // stock before i and not buy on this day (where hold[i - 1] means),
+            // but still, the last operation is buy for hold[i]
             hold[i] = Math.max(rest[i-1] - prices[i-1], hold[i-1]);
-            sold[i] = hold[i-1] + prices[i-1];  // we can only sell when the last operation is buying
+            // we can only sell when the last operation is buying
+            sold[i] = hold[i-1] + prices[i-1];
             rest[i] = Math.max(rest[i-1], sold[i-1]);
         }
         return Math.max(sold[prices.length], rest[prices.length]);
