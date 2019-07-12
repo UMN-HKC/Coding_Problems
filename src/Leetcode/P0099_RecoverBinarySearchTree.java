@@ -25,7 +25,7 @@ public class P0099_RecoverBinarySearchTree {
     // to cur because cur is the node with smaller value that gets mal-positioned.
 
     // time: O(n), though it seems finding predecessor takes time which may result in O(nlgn),
-    // it is not. 
+    // it is not.
     // space: O(1)
 
     public void recoverTree(TreeNode root) {
