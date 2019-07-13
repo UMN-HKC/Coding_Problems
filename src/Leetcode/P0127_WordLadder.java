@@ -7,6 +7,10 @@ public class P0127_WordLadder {
 
     // approach 1: bfs
 
+    // n: # of words in dictionary; l: length of word
+    // time: O(n * (l ^ 26))
+    // space: O(n)
+
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         int min = Integer.MAX_VALUE;
         int cnt = 2;
