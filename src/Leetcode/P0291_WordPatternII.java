@@ -12,7 +12,7 @@ public class P0291_WordPatternII {
     // m: length of pattern / n: length of str
     // time: O(m^n)
     // space: O(m), because for each run, the length of all strings in the set should not exceed the length of m
-    
+
     public boolean wordPatternMatch(String pattern, String str) {
         return dfs(pattern, 0, str, 0, new HashMap<>(), new HashSet<>());
     }
