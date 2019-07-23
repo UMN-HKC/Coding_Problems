@@ -38,7 +38,7 @@ public class P0376_WiggleSubsequence {
     // comes from its previous increasing sequence
     // When it is same(nums[i] == nums[i - 1]), the max wiggle sequence length stays same
     // Therefore, we will use two arrays (up and down) to denote increasing and decreasing states
-    
+
     public int wiggleMaxLength_dp(int[] nums) {
         if (nums == null || nums.length < 2) return nums.length;
         int[] up = new int[nums.length];
