@@ -4,7 +4,7 @@ public class P0002_AddTwoNumbers {
 
     // approach 1
     // simple, but note that when carry is not 0, we will still go into the loop
-    
+
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode res = new ListNode(-1);
         ListNode itr1 = l1, itr2 = l2, itr3 = res;;
