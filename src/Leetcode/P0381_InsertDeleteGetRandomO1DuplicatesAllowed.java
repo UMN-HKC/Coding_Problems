@@ -4,7 +4,7 @@ import java.util.*;
 public class P0381_InsertDeleteGetRandomO1DuplicatesAllowed {
 
     // approach 1: hashmap(integer to set) + arraylist
-    
+
     // similar approach as the initial problem. Since we allow duplicates, we
     // map our value to a set of its occurred indices.
 
