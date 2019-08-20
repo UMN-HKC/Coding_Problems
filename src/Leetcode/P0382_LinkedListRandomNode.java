@@ -8,7 +8,7 @@ public class P0382_LinkedListRandomNode {
     // the list once. Use cur to record the value picked so far and use cnt to record
     // the number of values we have encountered so far. cnt and random generator together
     // guarantees the equal possibility.
-    
+
     /** @param head The linked list's head.
     Note that the head is guaranteed to be not null, so it contains at least one node. */
     Random rd;
