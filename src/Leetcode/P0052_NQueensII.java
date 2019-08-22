@@ -4,6 +4,12 @@ import java.util.Set;
 
 public class P0052_NQueensII {
 
+    // approach 1: backtracking, but we do not need to actually place the queens.
+    // This approach is smart in that it sees that this cell's r + c remains same as
+    // its up 45 degrees and r - c remains same as its up 135 degrees. So we can utilize
+    // this characteristic and set to help us detect invalid placement of queeen and
+    // help us backtrack.
+
     Set<Integer> visitedCol = new HashSet<>();
     Set<Integer> visitedDiag1 = new HashSet<>();
     Set<Integer> visitedDiag2 = new HashSet<>();

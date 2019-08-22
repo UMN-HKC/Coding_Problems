@@ -4,6 +4,7 @@ import java.util.*;
 
 public class P0218_TheSkylineProblem {
 
+    // https://www.youtube.com/watch?v=GSBLe8cKu0s&t=801s
 
     public List<List<Integer>> getSkyline(int[][] buildings) {
         List<List<Integer>> res = new ArrayList<>();
@@ -15,7 +16,7 @@ public class P0218_TheSkylineProblem {
         }
 
         // when a[0] != b[0], we sort by increasing location order
-        // when a[0] == b[0] which means location overlaps, we have several edge cases to consider:
+        // when a[0] == b[0] which means location overlaps, we have 3 edge cases to consider:
         //  1. one is 'coming in' and the other one is 'coming out', we want to place 'comming in' before 'coming out'
         //  2. both are 'comming in', we want to put the higher building before lower building
         //  3. both are 'coming out', conversely, we will want to put the lower building before the higher building

@@ -6,6 +6,11 @@ import java.util.List;
 
 public class P0051_NQueens {
 
+    // approach 1: backtracking
+    // apply backtracking methodology: choice, constraint, and goal
+    // our choice is putting "Q" onto cell that does not break the rule;
+    // our constraint is that placing "Q" will not violate the rule
+    // our goal is to reach the final row which means we have placed all queens
 
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> res = new ArrayList<>();
