@@ -44,7 +44,7 @@ public class P0373_FindKPairsWithSmallestSum {
     // array and all elements in nums1 array to priority queue
     // Then, every time we pop a sum from pq, we push one new sum to pq
     // which comes from popped sum's bottom element. See the example below:
-    
+
     //        1   7   11  nums1
 
     //   2   [3   9   13]   -> init pq with all these sums first

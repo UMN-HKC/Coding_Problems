@@ -3,8 +3,9 @@ package Leetcode;
 public class P0307_RangeSumQueryMutable {
 
     // hard, couldn't figure out initially except brute force. But learned a new data structure
-    // approach 1: Fenwick tree
+    // approach 1: Fenwick tree(binary indexed tree)
     // great explanation and illustration with pics from Huahua: https://www.youtube.com/watch?v=WbafSgetDDk
+    // different than DP, it also did precalculation, but every node stores partial sum
 
     public FenwickTree ft;
     public int[] nums;
