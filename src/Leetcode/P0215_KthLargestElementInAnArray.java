@@ -32,46 +32,42 @@ public class P0215_KthLargestElementInAnArray {
     // are greater than the element at this index. Then, in our main function,
     // we can determine which part to search for our kth largest element.
 
-    public int findKthLargest_quick_select(int[] nums, int k) {
-        k = nums.length - k;
-        int l = 0, r = nums.length - 1;
-        int pivot = -1;
-        while (true) {
-            pivot = partition(nums, l, r);
-            if (pivot == k) {
-                return nums[k];
+    public int findKthLargest(int[] nums, int k) {
+        int m = nums.length;
+        k = m - k;
+        int l = 0, r = m - 1;
+        while (l < r) {
+            int p = partition(nums, l, r);
+            if (p == k) {
+                return nums[p];
             }
-            else if (pivot < k) {
-                l = pivot + 1;
-                pivot = partition(nums, l, r);
+            else if (p < k) {
+                l = p + 1;
+                p = partition(nums, l, r);
             }
             else {
-                r = pivot - 1;
-                pivot = partition(nums, l, r);
+                r = p - 1;
+                p = partition(nums, l, r);
             }
         }
+        return nums[l];
     }
     public int partition(int[] nums, int l, int r) {
-        if (l == r) {
-            return l;
-        }
-        int pivot = nums[r];
-        int i = -1, j = l, k = r;
-        // i: tail of elements that are smaller than the pivot element
-        // k: head of elements that are greater than the pivot element
-        while (j < k) {
-            if (nums[j] < pivot) {
-                i++;
-                j++;
-            }
-            else {
-                k--;
-                swap(nums, j, k);
-            }
-        }
-        swap(nums, j, r);
-        return j;
+        // randomize pivot pick process which significantly
+        // improves the actual runtime
+        Random rd = new Random();
+        int pivotIdx = l + rd.nextInt(r-l+1);
+        swap(nums, r, pivotIdx);
 
+        int pivot = nums[r];
+        for (int i = l; i < r; i++) {
+            if (nums[i] <= pivot) {
+                swap(nums,i,l);
+                l++;
+            }
+        }
+        swap(nums, l, r);
+        return l;
     }
     public void swap(int[] nums, int l, int r) {
         int temp = nums[l];
