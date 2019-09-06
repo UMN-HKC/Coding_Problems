@@ -3,7 +3,7 @@ package Leetcode;
 public class P0370_RangeAddition {
 
     // approach 1: O(n)
-    
+
     // no need to iterate through range for each update. first iteration, we add
     // the update to the start time, and subtract the update on (end + 1) time.
     // For the second iteration, we accumulate the previous updates and apply to
