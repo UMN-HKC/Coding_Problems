@@ -41,4 +41,33 @@ public class P0090_SubsetsII {
         }
         return;
     }
+
+    // approach 2:
+    // The idea is that for each position, we either choose it or not
+    // There are only 2 branches from this stack for our next level
+    // recursion call.
+    // Note that different from the first question, this one contains
+    // duplicates, so we need to sort the initial array first and
+    // then inside the recursion call, we can skip duplicates where
+    // its previous element is the same but hasn't marked as added
+
+    public List<List<Integer>> subsetsWithDup_2(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrack(res, new ArrayList<>(), nums, 0, false);
+        return res;
+    }
+    public void backtrack(List<List<Integer>> res, List<Integer> list, int[] nums, int idx, boolean prevAdded) {
+        if (idx >= nums.length) {
+            res.add(new ArrayList(list));
+            return;
+        }
+        backtrack(res, list, nums, idx + 1, false);
+        if (idx != 0 && !prevAdded && nums[idx] == nums[idx - 1]) {
+            return;
+        }
+        list.add(nums[idx]);
+        backtrack(res, list, nums, idx+1, true);
+        list.remove(list.size() - 1);
+    }
 }

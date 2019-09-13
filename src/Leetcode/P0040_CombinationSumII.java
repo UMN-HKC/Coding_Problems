@@ -40,4 +40,28 @@ public class P0040_CombinationSumII {
         }
         return;
     }
+
+    // approach 2:
+    // The key in this approach is to recurse on the choice of choose or not choose to
+    // add the current number and use a prevAdded flag to handle duplicate cases
+
+    public List<List<Integer>> combinationSum2_2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        dfs(res, new ArrayList<>(), candidates, 0, target, false);
+        return res;
+    }
+    public void dfs(List<List<Integer>> res, List<Integer> list, int[] nums, int idx, int rest, boolean prevAdded) {
+        if (rest == 0) {
+            res.add(new ArrayList(list));
+            return;
+        }
+        if (idx >= nums.length) return;
+        if (rest - nums[idx] < 0) return;
+        dfs(res, list, nums, idx + 1, rest, false);
+        if (idx != 0 && nums[idx] == nums[idx - 1] && !prevAdded) return;
+        list.add(nums[idx]);
+        dfs(res, list, nums, idx + 1, rest - nums[idx], true);
+        list.remove(list.size() - 1);
+    }
 }
