@@ -121,4 +121,66 @@ public class P0305_NumberOfIslandsII {
         }
         return seq;
     }
+
+    // uf with class definition
+
+    class UF {
+        int[] id, weight;
+        int size;
+        public UF(int n) {
+            size = 0;
+            id = new int[n];
+            weight = new int[n];
+            for (int i = 0; i < n; i++) {
+                id[i] = -1;
+                weight[i] = 0;
+            }
+        }
+        public int find(int p) {
+            while (id[p] != id[id[p]]) {
+                id[p] = id[id[p]];
+                p = id[p];
+            }
+            return id[p];
+        }
+        public void union(int p, int q) {
+            int pp = id[p];
+            int pq = id[q];
+            if (weight[pp] < weight[pq]) {
+                id[p] = pq;
+                weight[pq] += weight[pp];
+            }
+            else {
+                id[q] = pp;
+                weight[pp] += weight[pq];
+            }
+            size--;
+        }
+    }
+    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        List<Integer> res = new ArrayList<>();
+        UF uf = new UF(m * n);
+        for (int[] pos : positions) {
+            int cur = pos[0] * n + pos[1];
+            if (uf.id[cur] == -1) {
+                uf.id[cur] = cur;
+                uf.size++;
+                for (int[] dir : dirs) {
+                    int r = pos[0] + dir[0];
+                    int c = pos[1] + dir[1];
+                    if (r < 0 || c < 0 || r >= m || c >= n) continue;
+                    int neighbor = r * n + c;
+                    if (uf.id[neighbor] == -1) continue;
+                    int p1 = uf.find(cur);
+                    int p2 = uf.find(neighbor);
+                    if (p1 != p2)
+                        uf.union(uf.id[cur], p2);
+
+                }
+            }
+            res.add(uf.size);
+        }
+        return res;
+    }
 }
