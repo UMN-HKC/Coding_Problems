@@ -64,6 +64,11 @@ public class P0295_FindMedianFromDataStream {
     public void addNum(int num) {
         // be careful that we push num to max heap first and then
         // poll a max num from max heap and offer it to min heap
+        // by offering num to one heap first, we make sure the num
+        // pushed gets sorted and next when we maintain the size of
+        // two heaps, we won't mess up the property that maximum element
+        // in max heap is smaller than minimum element in min heap
+
         // Afterwards, we do a check to make sure max heap's size
         // is equal or greater than min heap by 1.
         maxHeap.offer(num);
