@@ -35,7 +35,12 @@ public class P0155_MinStack {
         return minSofar.peek();
     }
 
-    // approach 2: using only one stack
+    // approach 2: using only one stack and variable min
+
+    // only push the old minimum value when the current
+    // minimum value changes after pushing the new value x
+    // So the worst case the performance will be same as using
+    // two stacks.
 
     int min = Integer.MAX_VALUE;
     Stack<Integer> stack = new Stack<Integer>();
@@ -57,6 +62,55 @@ public class P0155_MinStack {
 
     public int top() {
         return stack.peek();
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    // approach 3: using one stack
+    // stack stores the gap between the pushed value and min at that time
+    // But in this approach we need to modify values and store them as long
+    // type into our stack to prevent overflow or underflow
+
+    int min;
+    Stack<Long> values;
+    public MinStack() {
+        values = new Stack<>();
+    }
+    public void push(int x) {
+        if (values.empty()) {
+            values.push(0l);
+            min = x;
+        }
+        else {
+            values.push((long)x - min);
+            if (x < min) {
+                min = x;
+            }
+        }
+
+    }
+
+    public void pop() {
+        long gap = values.pop();
+        // when the gap element is negative, it means the top element
+        // is the min value actually. And since we pop it, we need to
+        // retrieve and update the current min value
+        if (gap < 0) {
+            min = (int)(min - gap);
+        }
+    }
+
+    public int top() {
+        long top = values.peek();
+        // if top gap is negative, it means min value is the current top element
+        if (top < 0) {
+            return min;
+        }
+        else {
+            return (int)(top + min);
+        }
     }
 
     public int getMin() {
