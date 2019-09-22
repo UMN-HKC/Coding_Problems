@@ -47,6 +47,7 @@ public class P0127_WordLadder {
     }
 
     // approach 2: two-ended bfs
+    // use set to simulate queue because we want to check whether two ends meet in O(1) time
 
     public int ladderLength_two_end_bfs(String beginWord, String endWord, List<String> wordList) {
         if (!wordList.contains(endWord)) return 0;

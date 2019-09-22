@@ -34,6 +34,10 @@ public class P0140_WordBreakII {
      * "catsanddog"         ""
      */
 
+    // time: O(2^n) in worst case
+    // s = "aaaaaaaa", dict = ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa"]
+    // space: O(2^n)
+
     Map<String, List<String>> map = new HashMap<>();
     public List<String> wordBreak(String s, List<String> wordDict) {
         Set<String> dict = new HashSet<>(wordDict);

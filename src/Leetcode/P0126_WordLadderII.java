@@ -20,74 +20,68 @@ public class P0126_WordLadderII {
 
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
-        if (!wordList.contains(endWord)) {
-            return res;
-        }
         Set<String> dict = new HashSet<>(wordList);
-        Set<String> set1 = new HashSet<>();
-        Map<String, List<String>> parents = new HashMap<>();
-        // build graph
-        bfs(set1, beginWord, endWord, dict, parents);
-        // build path(dfs)
-        if (parents.containsKey(endWord)) {
-            dfs(res, new LinkedList<>(), beginWord, endWord, parents);
-        }
+        if (!dict.contains(endWord)) return res;
+
+        Map<String, List<String>> graph = new HashMap<>();
+        bfs(graph, new HashSet<>(), beginWord, endWord, dict);
+        dfs(graph, res, new ArrayList<>(), beginWord, endWord);
         return res;
     }
-    public void bfs(Set<String> set1, String beginWord, String endWord, Set<String> dict, Map<String, List<String>> parents) {
+    public void dfs(Map<String, List<String>> graph, List<List<String>> res, List<String> list, String beginWord, String endWord) {
+        list.add(beginWord);
+        if (beginWord.equals(endWord)) {
+            res.add(new ArrayList(list));
+        }
+        else {
+            // need to check if the begin word exists in the graph
+            // because it might be a word that is in the same level
+            // as the end word, so it will not have been added to graph
+            if (graph.containsKey(beginWord)) {
+                for (String next : graph.get(beginWord)) {
+                    dfs(graph, res, list, next, endWord);
+                }
+            }
+
+        }
+        list.remove(list.size() - 1);
+    }
+    public void bfs(Map<String, List<String>> graph, Set<String> curLevel, String beginWord, String endWord, Set<String> dict) {
         boolean found = false;
-        set1.add(beginWord);
-        while (!set1.isEmpty() && !found) {
-            // remove strings from dictionary which has been visited in last level to prevent cycle
-            for (String s : set1) {
+        curLevel.add(beginWord);
+        while (curLevel.size() != 0 && !found) {
+            Set<String> nextLevel = new HashSet<>();
+            // remove words from last level
+            for (String s : curLevel) {
                 dict.remove(s);
             }
-            Set<String> temp = new HashSet<>();
-            // current level
-            for (String s : set1) {
-                String p = s;
-                char[] chars = s.toCharArray();
-                // try each character for one string in current level
+            for (String cur : curLevel) {
+                char[] chars = cur.toCharArray();
                 for (int i = 0; i < chars.length; i++) {
                     char old = chars[i];
                     for (char c = 'a'; c <= 'z'; c++) {
-                        if (old == c) {
-                            continue;
-                        }
+                        if (c == old) continue;
                         chars[i] = c;
-                        String newWord = new String(chars);
-                        if (newWord.equals(endWord)) {
-
-                            List<String> list = parents.getOrDefault(newWord, new LinkedList());
-                            list.add(p);
-                            parents.put(newWord, list);
+                        String next = new String(chars);
+                        if (next.equals(endWord)) {
                             found = true;
+                            if (!graph.containsKey(cur)) {
+                                graph.put(cur, new ArrayList<>());
+                            }
+                            graph.get(cur).add(next);
                         }
-                        else if (dict.contains(newWord) && !found) {
-                            List<String> list = parents.getOrDefault(newWord, new LinkedList());
-                            list.add(p);
-                            parents.put(newWord, list);
-                            temp.add(newWord);
+                        else if (dict.contains(next) && !found) {
+                            if (!graph.containsKey(cur)) {
+                                graph.put(cur, new ArrayList<>());
+                            }
+                            graph.get(cur).add(next);
+                            nextLevel.add(next);
                         }
                     }
                     chars[i] = old;
                 }
             }
-            set1 = temp;
-        }
-        return;
-    }
-    public void dfs(List<List<String>> res, LinkedList<String> list, String beginWord, String curWord, Map<String, List<String>> parents) {
-        if (curWord.equals(beginWord)) {
-            list.addFirst(curWord);
-            res.add(new LinkedList<>(list));
-            list.removeFirst();
-            return;
-        }
-        for (String p : parents.get(curWord)) {
-            list.addFirst(curWord);
-            dfs(res, list, beginWord, p, parents);
-            list.removeFirst();
+            curLevel = nextLevel;
         }
     }
 }
