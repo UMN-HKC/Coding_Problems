@@ -1,6 +1,8 @@
 package Leetcode;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class P0252_MeetingRooms {
 
@@ -15,17 +17,21 @@ public class P0252_MeetingRooms {
         return true;
     }
 
-    // approach 2:
+    // approach 2: treemap
+    // sort by start time
+    // The idea is that whenever we start a meeting, we increment room cnt, and
+    // whenever we end a meeting, we decrement room cnt. So, whenever during our whole
+    // time interval, we have room cnt > 1, there's a conflict
 
-    public boolean canAttendMeetings(Interval[] intervals) {
+    public boolean canAttendMeetings_2(int[][] intervals) {
         Map<Integer, Integer> map = new TreeMap<>();
-        for (Interval itl : intervals) {
-            map.put(itl.start, map.getOrDefault(itl.start, 0) + 1);
-            map.put(itl.end, map.getOrDefault(itl.end, 0) - 1);
+        for (int[] t : intervals) {
+            map.put(t[0], map.getOrDefault(t[0], 0) + 1);
+            map.put(t[1], map.getOrDefault(t[1], 0) - 1);
         }
         int room = 0;
-        for (int v : map.values()) {
-            room += v;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            room += entry.getValue();
             if (room > 1) return false;
         }
         return true;

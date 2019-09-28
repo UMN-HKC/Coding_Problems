@@ -1,53 +1,104 @@
 package Leetcode;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class P0057_InsertInterval {
 
     // approach 1:
-    // keep a boolean flag to indicate whether the new interval has been added
-    // note that after the traversal, if the flag is still false, we need to add
-    // the new interval into result
+    // The basic idea is to
+    // - add all intervals ending before the start of the new interval
+    // - merge overlapping intervals
+    // - add all intervals starting after the end of the new interval
 
     public int[][] insert(int[][] intervals, int[] newInterval) {
-        if (newInterval == null) return intervals;
-        LinkedList<int[]> list = new LinkedList<>();
-        boolean added = false;
-        for (int[] interval : intervals) {
-            // if already added or new interval comes after
-            // current one, we will add current one
-            if (added || (!added && interval[1] < newInterval[0])) {
-                list.add(interval);
+        List<int[]> list = new ArrayList<>();
+        int m = intervals.length;
+        int i = 0;
+        // add all intervals which finishe before the new interval
+        while (i < m && intervals[i][1] < newInterval[0]) list.add(intervals[i++]);
+        if (i < m) {
+            // add the new interval and merge any overlapping intervals
+            list.add(newInterval);
+            int[] last = list.get(list.size() - 1);
+            while (i < m && ((intervals[i][0] <= last[0] && intervals[i][1] >= last[0]) || intervals[i][0] <= last[1])) {
+                last[0] = Math.min(intervals[i][0], last[0]);
+                last[1] = Math.max(intervals[i][1], last[1]);
+                i++;
             }
-            else {
-                // if the new interval comes before the current one
-                // we add it to the list and set add flag to true
-                // so later we do not to worry about it
-                if (interval[0] > newInterval[1]) {
-                    list.add(newInterval);
-                    list.add(interval);
-                    added = true;
-                }
-                // otherwise, there's overlap between current one
-                // and the new interval. We just update the new
-                // interval's start and end time
-                else {
-                    int newStart = Math.min(interval[0], newInterval[0]);
-                    int newEnd = Math.max(interval[1], newInterval[1]);
-                    newInterval[0] = newStart;
-                    newInterval[1] = newEnd;
-                }
-            }
+            // add intervals that start after the new interval
+            while (i < m) list.add(intervals[i++]);
         }
-        // if the new interval has not been added, we add it now
-        if (!added) {
+        else {
             list.add(newInterval);
         }
-        // convert to array
         int[][] res = new int[list.size()][2];
-        for (int i = 0; i < list.size(); i++) {
-            res[i] = list.get(i);
+        for (int j = 0; j < res.length; j++) res[j] = list.get(j);
+        return res;
+    }
+
+    // approach 2: binary search (not recommended, still O(n) in the worst case and it is hard to get it right)
+
+    public int[][] insert_2(int[][] intervals, int[] newInterval) {
+        if (intervals == null || intervals.length == 0) {
+            int[][] res = new int[1][2];
+            res[0] = newInterval;
+            return res;
+        }
+        int m = intervals.length;
+        int l = insertStartPosition(intervals, newInterval);
+        int r = insertEndPosition(intervals, newInterval);
+        // update start and end time
+        if (l >= 0 && l < m) newInterval[0] = Math.min(intervals[l][0], newInterval[0]);
+        if (r >= 0 && r < m) newInterval[1] = Math.max(intervals[r][1], newInterval[1]);
+        // edge case
+        if (l < 0) l++;
+        if (r == m) r--;
+        int len = l + m - r;
+        int[][] res = new int[len][2];
+        int cnt = 0;
+        // add any interval before the inserted interval's start time
+        for (int i = 0; i < l; i++) {
+            res[cnt++] = intervals[i];
+        }
+        res[cnt++] = newInterval;
+        // add any interval after the inserted interval's end time
+        for (int i = r + 1; i < m; i++) {
+            res[cnt++] = intervals[i];
         }
         return res;
+    }
+    public int insertStartPosition(int[][] intervals, int[] newInterval) {
+        int l = 0, r = intervals.length - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (intervals[m][1] == newInterval[0]) {
+                return m;
+            }
+            else if (intervals[m][1] > newInterval[0]) {
+                r = m - 1;
+            }
+            else {
+                l = m + 1;
+            }
+        }
+        return l;
+    }
+    public int insertEndPosition(int[][] intervals, int[] newInterval) {
+        int l = 0, r = intervals.length - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (intervals[m][0] == newInterval[1]) {
+                return m;
+            }
+            else if (intervals[m][0] < newInterval[1]) {
+                l = m + 1;
+            }
+            else {
+                r = m - 1;
+            }
+        }
+        return r;
     }
 }

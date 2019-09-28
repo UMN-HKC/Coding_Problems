@@ -15,6 +15,9 @@ public class P0095_UniqueBinarySearchTreesII {
     public List<TreeNode> genTree(int start, int end) {
         List<TreeNode> list = new ArrayList<>();
         if (start > end) {
+            // note that we need add null so that the leaf nodes can be added
+            // when bubbling up the stack, because we add new node, when both left
+            // and right lists have nodes either actual nodes or null in the lists
             list.add(null);
             return list;
         }

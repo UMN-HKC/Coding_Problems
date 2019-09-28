@@ -35,4 +35,33 @@ public class P0253_MeetingRoomII {
         }
         return pq.size();
     }
+
+    // approach 2: treemap
+    // sort by start time
+    // The idea is that whenever we start a meeting, we increment room cnt, and
+    // whenever we end a meeting, we decrement room cnt. Then, iterating through
+    // entries in map. Since entries are sorted in terms of start time, we record
+    // the maximum number of rooms(conflict) appeared from the beginning to the end
+
+    // for example:
+    // [[0, 30],[5, 10],[15, 20]]
+
+    //time: 0  5  10  15  20  30
+    //room: 1  1  -1  1   -1  -1
+    //max:  1  2  1   2   1   0
+
+    public int minMeetingRooms_2(int[][] intervals) {
+        Map<Integer, Integer> map = new TreeMap<>();
+        for (int[] t : intervals) {
+            map.put(t[0], map.getOrDefault(t[0], 0) + 1);
+            map.put(t[1], map.getOrDefault(t[1], 0) - 1);
+        }
+        int max = 0;
+        int room = 0;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            room += entry.getValue();
+            max = Math.max(max, room);
+        }
+        return max;
+    }
 }

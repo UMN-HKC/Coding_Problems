@@ -33,11 +33,11 @@ public class P0098_ValidateBST {
         while (!stack.empty() || root != null) {
             if (root != null) {
                 stack.push(root);
-                // check when coming down
                 root = root.left;
             }
             else {
                 root = stack.pop();
+                // check when pop()
                 if (prev != null && prev.val >= root.val) return false;
                 prev = root;
                 root = root.right;

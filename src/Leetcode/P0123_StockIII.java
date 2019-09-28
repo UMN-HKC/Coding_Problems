@@ -7,7 +7,7 @@ public class P0123_StockIII {
     // couldn't figure out initially
     // idea borrowed from discussion board
 
-    // approach 1: DP
+    // approach 1: bottom-up DP
     // We can generalize two transactions to k transactions, but in here, k = 2
     // The basic idea is that for k transactions, on an ith day the maximum prifit would be
     // the maximum between:
@@ -25,10 +25,17 @@ public class P0123_StockIII {
         int[][] dp = new int[k+1][n];
         for (int num = 1; num < dp.length; num++) {
             for (int i = 1; i < n; i++) {
+                // the following loop calculates profit if make transaction(sell) on ith day
+                // so if we make transaction(sell) on ith day, we must have've bought in
+                // one of the days before ith day. In that case, we iterate
+                // through 0 to (i-1)th days and see on which jth (0-(i-1)) day we buy a stock
+                // and sell on ith day will get us the most profit.
                 int tempMax = 0;
                 for (int j = 0; j < i; j++) {
                     tempMax = Math.max(tempMax, dp[num - 1][j] + prices[i] - prices[j]);
                 }
+                // after we calculated the maximum profit we can get if we make transaction
+                // on ith day, we compare if we make this transaction or not
                 dp[num][i] = Math.max(dp[num][i - 1], tempMax);
             }
         }
@@ -40,6 +47,8 @@ public class P0123_StockIII {
     // innermost loop, the only changing value is (dp[num - 1][j] - prices[j]), and this is where
     // we can optimize the time complexity by updating this value each time
 
+    // check out Tushar's video on optimizing space: https://www.youtube.com/watch?v=oDhu5uGq_ic
+
     // time: O(k * n))
     // space: O(k * n)
 
@@ -50,10 +59,10 @@ public class P0123_StockIII {
         int[][] dp = new int[k+1][n];
         for (int num = 1; num < dp.length; num++) {
             // maxDiff is initially -prices[0](dp[num - 1][0] - prices[0] == -prices[0])
-            int maxDiff = -prices[0];
+            int profitAfterBuy = -prices[0];
             for (int i = 1; i < n; i++) {
-                dp[num][i] = Math.max(dp[num][i - 1], prices[i] + maxDiff);
-                maxDiff = Math.max(maxDiff, dp[num - 1][i] - prices[i]);
+                dp[num][i] = Math.max(dp[num][i - 1], prices[i] + profitAfterBuy);
+                profitAfterBuy = Math.max(profitAfterBuy, dp[num - 1][i] - prices[i]);
             }
         }
         return dp[k][n-1];
