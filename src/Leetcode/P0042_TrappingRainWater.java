@@ -9,6 +9,9 @@ public class P0042_TrappingRainWater {
     // The key is to have leftMax and rightMax variables to keep track of max of two sides that could
     // capture water between, and the smaller between these two is the one that determines the actual water
     // can be captured.
+    // Note that when leftMax is smaller or equal to rightMax, we move left pointer and vice versa.
+    // Why is that? Because left height is limiting what we can capture, so we want to find a better
+    // leftMax, and meanwhile we already have leftMax recorded so it's safe to move left pointer as well.
 
     public int trap(int[] height) {
         if (height == null || height.length < 3) return 0;

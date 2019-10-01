@@ -7,6 +7,11 @@ public class P0146_LRUCache {
     // initially used java's deque structure but later realized it is taking
     // O(n) time to remove a specific element from the list
 
+    // Note that we need to be careful when deleting nodes and updating the map.
+    // Always get the reference to the node that needs to be deleted. Otherwise,
+    // may result in NullPointerException later when we want to access it to update it
+    // in the map as well.
+
     class LRUCache {
         class Node {
             Node front;

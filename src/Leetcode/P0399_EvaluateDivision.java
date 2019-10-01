@@ -3,6 +3,10 @@ package Leetcode;
 import java.util.*;
 
 public class P0399_EvaluateDivision {
+
+    // approach 1: graph
+    // The basic idea is to realize and abstract this problem as a directed graph with weight
+
     public double[] calcEquation_dfs(List<List<String>> equations, double[] values, List<List<String>> queries) {
         Map<String, List<String>> verticeToNeighbors = new HashMap<>();
         Map<String, List<Double>> verticeToValues = new HashMap<>();

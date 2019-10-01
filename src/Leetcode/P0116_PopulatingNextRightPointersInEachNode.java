@@ -25,7 +25,33 @@ public class P0116_PopulatingNextRightPointersInEachNode {
         return root;
     }
 
-    // approach 2: recursive
+    // approach 2: use dummy node to help
+
+    public Node connect_2(Node root) {
+        if (root == null) return null;
+        Node cur = root;
+        while (cur != null) {
+            Node nextLevelDummyHead = new Node(-1);
+            Node nextLevelItr = nextLevelDummyHead;
+            Node itr = cur;
+            while (itr != null) {
+                if (itr.left != null) {
+                    nextLevelItr.next = itr.left;
+                    nextLevelItr = nextLevelItr.next;
+                }
+                if (itr.right != null) {
+                    nextLevelItr.next = itr.right;
+                    nextLevelItr = nextLevelItr.next;
+                }
+                itr = itr.next;
+            }
+            cur = nextLevelDummyHead.next;
+
+        }
+        return root;
+    }
+
+    // approach 3: recursive
     // preorder
 
     public Node connect_rec(Node root) {
