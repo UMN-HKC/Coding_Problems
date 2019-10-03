@@ -64,13 +64,26 @@ public class P0012_IntegerToRoman {
         return sb.toString();
     }
 
-    // approach 2: predefine all possible combinations, elegant
+    // approach 2:
+    // predefine all possible combinations
+    // and then subtract the greatest possible until the remaining number is smaller
+    // enough to to subtracted by the next value
 
-    public static String intToRoman(int num) {
-        String M[] = {"", "M", "MM", "MMM"};
-        String C[] = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
-        String X[] = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
-        String I[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
-        return M[num/1000] + C[(num%1000)/100] + X[(num%100)/10] + I[num%10];
+    // note that 8 is not IIIV, 8 is VIII instead, that's why we can keep subtracting the
+    // bigger number until it cannot be subtracted any more.
+
+    public static String[] strs = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+    public static int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    public String intToRoman(int num) {
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        while (num != 0) {
+            while (num >= values[i]) {
+                sb.append(strs[i]);
+                num -= values[i];
+            }
+            i++;
+        }
+        return sb.toString();
     }
 }

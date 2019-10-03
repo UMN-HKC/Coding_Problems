@@ -1,5 +1,8 @@
 package Leetcode;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class P0003_LongestSubstriungWithoutRepeatingCharacters {
 
     // sliding window approach
@@ -25,6 +28,28 @@ public class P0003_LongestSubstriungWithoutRepeatingCharacters {
             // update
             if (j - i > max) {
                 max = j - i;
+            }
+        }
+        return max;
+    }
+
+    // alternatively, we can use set to be more general
+
+    public int lengthOfLongestSubstring_2(String s) {
+        if (s == null || s.length() == 0) return 0;
+
+        Set<Character> set = new HashSet<>();
+        int i = 0, j = 0;
+        int max = 1;
+        while (j < s.length()) {
+            char c = s.charAt(j);
+            if (set.add(c)) {
+                j++;
+                max = Math.max(max, j - i);
+            }
+            else {
+                set.remove(s.charAt(i));
+                i++;
             }
         }
         return max;
