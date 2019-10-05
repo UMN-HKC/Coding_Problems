@@ -117,6 +117,9 @@ public class P0120_Triangle {
     }
 
     // approach 4: savage
+    // The basic idea is to modify on the input list directly as approach 3 but
+    // going from bottom to top which saves a lot of checking since there's always
+    // a bottom and a bottom right element available
 
     public int minimumTotal_savage(List<List<Integer>> triangle) {
         int[] A = new int[triangle.size()+1];

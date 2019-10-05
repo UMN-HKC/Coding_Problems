@@ -6,9 +6,11 @@ import java.util.Map;
 public class P0166_FractionToRecurringDecimal {
 
 
-    // approach 1: brute force
-    // just implement it. The whole number part and then the fractional part.
-    // and pay attention to edge cases, such as sign, overflow, etc
+    // approach 1: brute force (pay attention to edge cases, such as sign, overflow, etc)
+    // deal with the sign -> convert to long type -> record while number part -> deal with fractional part
+    // note that when dealing with fractional part, we use map to store mod value instead of div value
+    // because div value can appear multiple times, such as 0.0005 but mod value indicates if we have
+    // encountered repeating part indeed.
 
     public String fractionToDecimal(int numerator, int denominator) {
         // if numerator is 0, just return

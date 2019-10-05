@@ -67,9 +67,18 @@ public class P0301_RemoveInvalidParentheses {
     }
 
     // approach 2: DFS
-
     // huahua's explanation: https://www.youtube.com/watch?v=2k_rS_u6EBk&t=1149s
-    // time: O(n* (2^(l+r)))
+    // The idea is that we first calculate number of invalid left and right parentheses.
+    // The sum of those invalid left and right parentheses is the depth of our recursion
+    // Then we dfs to remove those parentheses and add valid string when left == 0 and right == 0
+    // to the result.
+    // Note that, when removing parentheses, we always first remove extra invalid
+    // right parentheses. If right == 0, we remove invalid left parentheses. Also,
+    // to prevent duplicate result, we use lastRemovePos variable to indicate the start
+    // position of the string for each recursion.
+
+
+    // time: O(n ^ (l+r))) recursion depth is number of invalid parentheses
     // space: O((l+r) * n) since we have (l+r) depth and at each level we have substring of
     // average length of n
 
@@ -77,14 +86,14 @@ public class P0301_RemoveInvalidParentheses {
         List<String> res = new ArrayList<>();
         int left = 0, right = 0;
         for (char c : s.toCharArray()) {
-            left += c == '(' ? 1 : 0;
-            if (left == 0) {
-                if (c == ')') {
-                    right++;
-                }
+            if (c == '(') {
+                left++;
             }
-            else {
-                left -= c == ')' ? 1 : 0;
+            else if (c == ')') {
+                if (left == 0) right++;
+                else {
+                    left--;
+                }
             }
         }
         remove(res, s, 0, left, right);
@@ -96,13 +105,19 @@ public class P0301_RemoveInvalidParentheses {
             return;
         }
         for (int i = lastRemovePos; i < s.length(); i++) {
+            // if the character is not the first and same as last character
+            // we will skip it, since we might have already recursed on the
+            // last character if that character is an invalid parentheses
             if (i != lastRemovePos && s.charAt(i) == s.charAt(i - 1)) continue;
-            if ((s.charAt(i) == '(' && left > 0) || (s.charAt(i) == ')' && right > 0)) {
-                if (s.charAt(i) == '(' && left > 0) {
-                    remove(res, s.substring(0, i) + s.substring(i + 1), i, left - 1, right);
-                }
-                else {
+            // delete invalid right parentheses first to make prefix valid
+            if (right > 0) {
+                if (s.charAt(i) == ')') {
                     remove(res, s.substring(0, i) + s.substring(i + 1), i, left, right - 1);
+                }
+            }
+            else {
+                if (s.charAt(i) == '(') {
+                    remove(res, s.substring(0, i) + s.substring(i + 1), i, left - 1, right);
                 }
             }
 

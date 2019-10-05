@@ -61,6 +61,9 @@ public class P0332_ReconstructItinerary {
     }
 
     // approach 2: (HierHolzer's alg)
+
+    // youtube video on finding Eulerian Path: https://www.youtube.com/watch?v=8MpoO2zA2l4
+
     // The key is to realize that when there's no more edge in our priority queue
     // in the current recursion call, it means we have finished visiting our destination
     // or running into a dead end. We then need to add the starting city to the front of
@@ -71,8 +74,8 @@ public class P0332_ReconstructItinerary {
     // The reason we got stuck is because that we hit the exit
 
     // time: O(nlogn)
-    //  Hierholzer: O(n)
-    //  buildGraph O(nlogn)
+    // Hierholzer: O(n)
+    // buildGraph O(nlogn)
     // space: O(n)
 
     public List<String> findItinerary_2(List<List<String>> tickets) {
