@@ -15,40 +15,55 @@ public class P0380_InsertDeleteGetRandomO1 {
     class RandomizedSet {
 
         /** Initialize your data structure here. */
-        Random rd;
         Map<Integer, Integer> map;
         List<Integer> list;
+        Random random;
         public RandomizedSet() {
-            rd = new Random();
             map = new HashMap<>();
             list = new ArrayList<>();
+            random = new Random();
         }
 
         /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
         public boolean insert(int val) {
-            if (map.containsKey(val)) return false;
-            map.put(val, list.size());
-            list.add(val);
-            return true;
+            if (map.containsKey(val)) {
+                return false;
+            }
+            else {
+                map.put(val, list.size());
+                list.add(val);
+                return true;
+            }
         }
 
         /** Removes a value from the set. Returns true if the set contained the specified element. */
         public boolean remove(int val) {
-            if (!map.containsKey(val)) return false;
-            int loc = map.get(val);
-            int last = list.get(list.size() - 1);
-            list.set(loc, last);
-            list.remove(list.size() - 1);
-            map.remove(val);
-            if (loc != list.size()) {
-                map.put(last, loc);
+            if (!map.containsKey(val)) {
+                return false;
             }
-            return true;
+            else {
+                if (map.get(val) == list.size() - 1) {
+                    map.remove(val);
+                    list.remove(list.size() - 1);
+                }
+                else {
+                    int removeElementIdx = map.get(val);
+                    int lastElement = list.get(list.size() - 1);
+                    // remove from map and update map
+                    map.remove(val);
+                    map.put(lastElement, removeElementIdx);
+                    // remove from list and update list
+                    list.set(removeElementIdx, lastElement);
+                    list.remove(list.size() - 1);
+                }
+                return true;
+            }
         }
 
         /** Get a random element from the set. */
         public int getRandom() {
-            return list.get(rd.nextInt(list.size()));
+            int idx = random.nextInt(list.size());
+            return list.get(idx);
         }
     }
 
