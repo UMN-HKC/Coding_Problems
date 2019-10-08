@@ -29,57 +29,51 @@ public class P0025_ReverseNodeInKGroup {
     }
 
     // approach 2: iterative approach
-    // the main idea is to visualize reversing the linked list as the following
-    // and use a dummy node to help us as well. The key is to reverse list[begin, end]
-    // with begin and end exclusive. And the reverse() helper function will return
-    // the 'dummy' starting node for the next reverse process of the list
+    // The basic idea is to keep track of multiple nodes that would play roles in reversing
+    // sublist and reconnecting. Use a helper function to reverse the sublist and return
+    // a pair of nodes(new head and new tail). And then reconnect original list with reversed
+    // sublist and then move pointers to the next node of the tail of the reversed sublist.
 
-    /**
-     * Reverse a link list between begin and end exclusively
-     * an example:
-     * a linked list:
-     * 0->1->2->3->4->5->6
-     * |           |
-     * begin       end
-     * after call begin = reverse(begin, end)
-     *
-     * 0->3->2->1->4->5->6
-     *          |  |
-     *      begin end
-     * @return the reversed list's 'begin' node, which is the precedence of node end
-     */
-
-    public ListNode reverseKGroup_iterative(ListNode head, int k) {
-        if (k < 2 || head == null || head.next == null) return head;
+    public ListNode reverseKGroup_2(ListNode head, int k) {
+        if (k == 1) return head;
         ListNode dummy = new ListNode(-1);
-        ListNode begin = dummy;
         dummy.next = head;
-        int i = 0;
-        while (head != null) {
-            i++;
-            if (i % k == 0) {
-                begin = reverse(begin, head.next);
-                head = begin.next;
+        ListNode cur = head;
+        ListNode pre = dummy;
+        while (cur != null) {
+            int cnt = 1;
+            while (cur != null && cnt < k) {
+                cur = cur.next;
+                cnt++;
+            }
+            if (cur != null && cnt == k) {
+                ListNode next = cur.next;
+                cur.next = null;
+                ListNode nextHead = pre.next;
+                pre.next = null;
+                // reverse sublist and return new head and new tail
+                ListNode[] revList = reverse(nextHead, cur);
+                // reconnect head and tail of the reversed list
+                // and move cur pointer to the next of tail of reversed list
+                pre.next = revList[0];
+                revList[1].next = next;
+                pre = revList[1];
+                cur = next;
             }
             else {
-                head = head.next;
+                break;
             }
         }
         return dummy.next;
     }
-    public ListNode reverse(ListNode begin, ListNode end) {
-        ListNode pre, cur, next, first;
-        pre = begin;
-        first = cur = next = begin.next;
-        while (cur != end) {
+    public ListNode[] reverse(ListNode head, ListNode tail) {
+        ListNode pre = null, cur = head, next = head;
+        while (cur != null) {
             next = next.next;
             cur.next = pre;
             pre = cur;
             cur = next;
         }
-
-        begin.next.next = end;
-        begin.next = pre;
-        return first;
+        return new ListNode[]{pre, head};
     }
 }
