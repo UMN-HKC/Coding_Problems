@@ -81,7 +81,7 @@ public class P0010_RegularExpressionMatching {
         int n = p.length();
         boolean[][] dp = new boolean[m+1][n+1];
         dp[0][0] = true;
-        // deal with pattern like "a*a*a*"
+        // IMPORTANT: deal with pattern like "a*a*a*" for the base case when s is empty
         for (int i = 0; i < p.length(); i++) {
             if (p.charAt(i) == '*' && dp[0][i-1]) {
                 dp[0][i+1]  = true;
@@ -94,12 +94,15 @@ public class P0010_RegularExpressionMatching {
                     dp[i + 1][j + 1] = dp[i][j];
                 }
                 else if (p.charAt(j) == '*') {
-                    // - ignore the character before '*'
-                    // - include 1 character before '*'
-                    // - include multiple character before '*'
+                    // - ignore the character before '*' if it is not possible to
+                    // utilize multiple(1 or more) this previous character in p
+                    // and the result will only be dependent on dp[i+1][j-1](if s[0:i]==p[0:j-2])
                     if (s.charAt(i) != p.charAt(j - 1) && p.charAt(j - 1) != '.') {
                         dp[i+1][j+1] = dp[i+1][j - 1];
                     }
+                    // - ignore the character before '*'
+                    // - act as nothing (ignore '*' itself)
+                    // - act as same character before '*'
                     else {
                         dp[i+1][j+1] = dp[i+1][j - 1] || dp[i+1][j] || dp[i][j+1];
                     }
