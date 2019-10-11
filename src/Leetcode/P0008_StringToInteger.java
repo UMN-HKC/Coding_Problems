@@ -5,54 +5,31 @@ public class P0008_StringToInteger {
     /***
      initial approach: brute force 实现题
      steps:
-        - remove white space
-        - check sign at index 0
-        - loop
-            - if digit:
-                - include
-                - check if overflow
-                    - if overflow: return
-                    - continue
-            - else: return
-         - return
+        - skip initial white space
+        - check sign
+        - loop while the next one is digit
+         - return sign * num
      ***/
 
     public int myAtoi(String str) {
-        // remove white space
-        str = str.trim();
-        if (str.length() == 0 || (str.charAt(0) != '+' && str.charAt(0) != '-' && (str.charAt(0) < '0' || str.charAt(0) > '9'))) {
-            return 0;
-        }
-        int res = 0;
-        int itr = 0;
-        int sign = 1;
-        if (str.charAt(0) == '+') {
-            itr++;
-        }
-        else if (str.charAt(0) == '-') {
-            itr++;
-            sign = -1;
+        if (str == null || str.length() == 0) return 0;
+        int i = 0, num = 0, sign = 1, n = str.length();
+        // skip white spaces
+        while (i < n && str.charAt(i) == ' ') i++;
+        if (i < n && (str.charAt(i) == '+' || str.charAt(i) == '-')) {
+            sign = str.charAt(i) == '+' ? 1 : -1;
+            i++;
         }
 
-        // use prev to detect overflow
-        int prev = res;
-        while (itr < str.length()) {
-            char c = str.charAt(itr);
-            if (c >= '0' && c <= '9') {
-                res *= 10;
-                res += (c - '0');
-                // if overflow detected, return
-                if (res / 10 != prev) {
-                    return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-                }
-                prev = res;
+        while (i < n && Character.isDigit(str.charAt(i))) {
+            int digit = str.charAt(i) - '0';
+            if ((Integer.MAX_VALUE - digit) / 10 < num || (Integer.MIN_VALUE + digit) / 10 > num ||
+                    (Integer.MAX_VALUE / 10 == num && sign == -1 && digit > Integer.MAX_VALUE % 10)) {
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
             }
-            else {
-                // if not a digit at current index, return result
-                return res * sign;
-            }
-            itr++;
+            num = num * 10 + digit;
+            i++;
         }
-        return sign * res;
+        return num * sign;
     }
 }
