@@ -7,38 +7,31 @@ public class P0092_ReverseLinkedListII {
     // so that after we reverse the target range of list, we can connect them back.
 
     public ListNode reverseBetween(ListNode head, int m, int n) {
-        if (head == null || m == n) return head;
+        if (head == null || head.next == null) return head;
+
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode pre = dummy;
         int cnt = 1;
-        ListNode beforeM = null, markM = null;
-        ListNode prev = null, cur = head, next = head;
-        while (cnt <= n) {
-            next = next.next;
-            if (cnt < m) {
-                prev = cur;
-                cur = next;
-            }
-            else if (cnt >= m && cnt < n){
-                if (cnt == m) {
-                    beforeM = prev;
-                    markM = cur;
-                }
-                cur.next = prev;
-                prev = cur;
-                cur = next;
-            }
-            else if (cnt == n) {
-                markM.next = next;
-                cur.next = prev;
-                // if beforeM is null, we do not do anything yet
-                if (beforeM != null) {
-                    beforeM.next = cur;
-                }
-                break;
-            }
+        // move pre pointer to the node before the beginning
+        // of the sublist that is to be reversed
+        while (cnt < m) {
+            pre = pre.next;
             cnt++;
         }
-        // when there's no node before m, it means where cur stops
-        // at which is node at position n will be the new head
-        return beforeM == null ? cur : head;
+        // reference the reconnecting nodes first before reversing the sublist
+        // after referencing, the rest is the same as reversing a list.
+        ListNode leftTail = pre, nextTail = pre.next, cur = pre.next, next = pre.next;
+        while (cnt <= n) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+            cnt++;
+        }
+        // reconnect
+        nextTail.next = next;
+        leftTail.next = pre;
+        return dummy.next;
     }
 }

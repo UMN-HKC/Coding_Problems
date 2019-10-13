@@ -31,6 +31,8 @@ public class P0273_IntegerToEnglishWords {
     }
     public String numLessThanThousand(int num) {
         String res = "";
+        // since when less than 20, we always add an extra space to the end
+        // but we do not want an extra space if num is 0
         if (num == 0) return "";
         if (num >= 100) {
             res = LESS_THAN_20[num / 100] + " Hundred " +  numLessThanThousand(num % 100);

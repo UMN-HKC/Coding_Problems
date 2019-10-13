@@ -2,11 +2,12 @@ package Leetcode;
 
 public class P0072_EditDistance {
 
+    // approach 1: DP
 
     // dp[i][j] means the minimum operations taken to convert substring word1[0,i] to substring of word2[0,j]
-    //    dp(i - 1, j) represents delete operation
-    //    dp(i, j - 1) represents insert operation
-    //    dp(i - 1, j - 1) represents replace operation
+    //   - dp(i - 1, j) represents delete operation
+    //   - dp(i, j - 1) represents insert operation
+    //   - dp(i - 1, j - 1) represents replace operation
 
     public int minDistance(String word1, String word2) {
         if (word1 == null || word1.length() == 0) return word2.length();
@@ -27,4 +28,31 @@ public class P0072_EditDistance {
         }
         return dp[l1][l2];
     }
+
+    // optimize space from O(m * n) to O(n)
+
+    public int minDistance_2(String word1, String word2) {
+        int len1 = word1.length(), len2 = word2.length();
+        int[] pre = new int[len2 + 1];
+        int[] cur = new int[len2 + 1];
+        for (int i = 1; i < pre.length; i++) pre[i] = i;
+        for (int i = 0; i < len1; i++) {
+            // note that we need to initialize cur[0] to i + 1 because that is
+            // how we set the base case when we have rows in approach 1
+            cur[0] = i + 1;
+            for (int j = 0; j < len2; j++) {
+                if (word1.charAt(i) == word2.charAt(j)) {
+                    cur[j + 1] = pre[j];
+                }
+                else {
+                    cur[j + 1] = 1 + Math.min(Math.min(pre[j + 1], cur[j]), pre[j]);
+                }
+            }
+            int[] temp = pre;
+            pre = cur;
+            cur = temp;
+        }
+        return pre[len2];
+    }
+
 }
