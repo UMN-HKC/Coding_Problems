@@ -52,26 +52,31 @@ public class P0084_LargestRectangleInHistogram {
         return max;
     }
 
-    // approach 2: Stack
+    // approach 2: Stack (monotonic stack)
+    // The idea is to maintain a monotonic stack. The stack will store the indices which corresponds
+    // to their heights and should be in increasing order in terms of their heights as well. Each time
+    // we encounter a rectangle that breaks the monotonic increasing height rule, we start pop
+    // indices from the stack and meanwhile calculate and update max, until the height referenced by
+    // the index at the top of stack is smaller than the current height, then we push the current
+    // height's index to the stack. Thus, stack still maintains its monotonic property.
 
     // time: O(n)
     // space: O(n)
 
-    public int largestRectangleArea_stack(int[] heights) {
+    public int largestRectangleArea(int[] heights) {
         if (heights == null || heights.length == 0) return 0;
-        Stack<Integer> s = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
+        // push -1 to the stack so that we always have something in the stack
+        // for us to calculate. But note that when popping, we need to check we do not pop -1
+        stack.push(-1);
         int max = 0;
-        int i = 0;
-        while (i <= heights.length) {
-            int h = (i == heights.length ? 0 : heights[i]);
-            if (s.empty() || h >= heights[s.peek()]) {
-                s.push(i);
-                i++;
+        int len = heights.length;
+        for (int i = 0; i <= len; i++) {
+            int cur = i == len ? 0 : heights[i];
+            while (stack.peek() != -1 && heights[stack.peek()] >= cur) {
+                max = Math.max(max, heights[stack.pop()] * (i - stack.peek() - 1));
             }
-            else {
-                int tp = s.pop();
-                max = Math.max(max, heights[tp] * (i - 1 - (s.empty() ? -1 : s.peek())));
-            }
+            stack.push(i);
         }
         return max;
     }

@@ -4,7 +4,7 @@ import java.util.*;
 public class P0322_CoinChange {
 
 
-    // initial approach: dp
+    // approach 1: dp (bottom-up)
 
     // time: O(amount * n)
     // space: O(amount)
@@ -12,9 +12,7 @@ public class P0322_CoinChange {
     public static void main(String[] args) {
         P0322_CoinChange cc = new P0322_CoinChange();
         System.out.println(cc.coinChange_dfs(new int[]{1,5,2}, 11));
-
     }
-
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount+1];
         Arrays.fill(dp, Integer.MAX_VALUE);
@@ -24,7 +22,6 @@ public class P0322_CoinChange {
                 int j = i - coin;
                 if (j >= 0 && dp[j] != Integer.MAX_VALUE) {
                     dp[i] = Math.min(dp[j] + 1, dp[i]);
-
                 }
             }
         }
@@ -37,6 +34,14 @@ public class P0322_CoinChange {
     // result count is already smaller or equal to the current amount of coins
 
     // time: O(amount^n / (coin_1 * coin_2 * ... * coin_n))
+    // 一共有n层递归，每一层的循环的上限是 amount / coin_i
+    // 所以就是 (amount / coin_1) *  (amount / coin_2) * ... (amount / coin_n)
+    //
+    // 递归展开后大概是这样...
+    // for (int i1 = 1; i1 <= amount / coin_1; ++i1)
+    //    for (int i2 = 1; i2 <= amount / coin_2; ++i2)
+    //       for (int i3 = 1; i2 <- amount / coin_3; ++i3)
+    //           ...
 
     public int[] res = new int[]{Integer.MAX_VALUE};
 

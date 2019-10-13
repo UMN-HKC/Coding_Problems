@@ -7,7 +7,7 @@ public class P0407_TrappingRainWaterII {
     // approach 1: BFS + priority queue
     // link1: https://github.com/awangdev/LintCode/blob/master/Java/Trapping%20Rain%20Water%20II.java
     // link2: https://www.cnblogs.com/grandyang/p/5928987.html
-    
+
     // First, we need to realize that the maximum water that the map can hold is determined
     // by the outer area, so we bfs starting from the outermost area. Note that the priority
     // queue places lower height cell on top of it. So each time we pop a cell, it is the

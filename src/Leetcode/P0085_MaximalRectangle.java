@@ -3,6 +3,8 @@ import java.util.*;
 
 public class P0085_MaximalRectangle {
 
+    // Both approaches are based on approaches to 84.Largest Rectangle In Histogram
+
     // approach 1: DP
     // the following analysis credits to wahcheung
     //
