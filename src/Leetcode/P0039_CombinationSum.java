@@ -34,4 +34,26 @@ public class P0039_CombinationSum {
         }
         return;
     }
+
+    // same approach without for loop
+
+    public List<List<Integer>> combinationSum_2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        // Arrays.sort(candidates);
+        helper(res, new ArrayList<>(), candidates, 0, target);
+        return res;
+    }
+    public void helper(List<List<Integer>> res, List<Integer> list, int[] nums, int idx, int target) {
+        if (target == 0) {
+            res.add(new ArrayList(list));
+            return;
+        }
+        if (target < 0 || idx >= nums.length) return;
+        helper(res, list, nums, idx + 1, target);
+        list.add(nums[idx]);
+        // note that in here we still pass in idx instead of idx + 1,
+        // since we want same number as well
+        helper(res, list, nums, idx, target - nums[idx]);
+        list.remove(list.size() - 1);
+    }
 }
