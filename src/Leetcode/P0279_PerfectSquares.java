@@ -5,9 +5,11 @@ import java.util.Arrays;
 public class P0279_PerfectSquares {
 
 
-    // couldn't figure out initially
-    // idea borrowed from discussion board
-    // DP solution
+    // approach 1: DP
+    // The basic idea is to realize the problem could be solved using dynammic programming
+    // dp[i] will be 1 + min(dp[i - j * j] where j = 1, 2, 3...)
+
+    // time: O(nlogn)
 
     public int numSquares(int n) {
         int[] dp = new int[n + 1];
