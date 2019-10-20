@@ -44,6 +44,8 @@ public class P0028_strStr {
     // going all the way back to begging of needle string when characters don't
     // match between haystack and needle.
     // memo[i]: where to start matching in needle after a mismatch at i + 1
+    // or could interpreted as: the length of the longest proper prefix in the
+    // s[0,i] that matches a proper suffix in s[0, i]
 
     // time: O(m + n)
     // space: O(n)
