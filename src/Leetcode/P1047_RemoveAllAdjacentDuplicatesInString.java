@@ -1,5 +1,7 @@
 package Leetcode;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Stack;
 
 public class P1047_RemoveAllAdjacentDuplicatesInString {
@@ -36,5 +38,24 @@ public class P1047_RemoveAllAdjacentDuplicatesInString {
             res = s.pop() + res;
         }
         return res;
+    }
+
+    // use deque instead of stack so that we could directly append to result
+
+    public String removeDuplicates(String S) {
+        Deque<Character> dq = new LinkedList<>();
+        for (int i = 0; i < S.length(); i++) {
+            if (dq.isEmpty() || dq.peekLast() != S.charAt(i)) {
+                dq.offerLast(S.charAt(i));
+            }
+            else {
+                dq.pollLast();
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!dq.isEmpty()) {
+            sb.append(dq.pollFirst());
+        }
+        return sb.toString();
     }
 }

@@ -99,6 +99,9 @@ public class P0394_DecodeString {
 
     // most optimized using stack, but only one go
 
+    // time: O(k_max * n), eg: 10000[a]
+    // space: O(n)
+
     public String decodeString_3(String s) {
         String res = "";
         Stack<Integer> countStack = new Stack<>();
