@@ -2,14 +2,14 @@ package Leetcode;
 
 public class P0222_CountCompleteTreeNodes {
 
-    // approach 1: time O(n)
+    // approach 1: time O(n) number of nodes
 
     public int countNodes(TreeNode root) {
         if (root == null) return 0;
         return 1 + countNodes(root.left) + countNodes(root.right);
     }
 
-    // approach 2: time O((logn)^2)
+    // approach 2: binary search
     // use complete binary tree's property: a complete binary
     // tree of height h has (2^h - 1) number of nodes.
     // The basic idea is that we first find the height of the whole binary tree
@@ -23,6 +23,8 @@ public class P0222_CountCompleteTreeNodes {
     // whole tree, then the last node of the last row in the tree is in the left subtree
     // so the total number of nodes is the number of nodes of the root's right subtree(1 << h-2)
     // and recursively calculated number of nodes in the left subtree and 1 root node.
+
+    // time O((logn)^2) == O(H * H)
 
     public int findHeight(TreeNode root) {
         int cnt = 0;
