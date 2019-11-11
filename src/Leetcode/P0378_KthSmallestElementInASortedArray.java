@@ -4,7 +4,10 @@ public class P0378_KthSmallestElementInASortedArray {
 
 
     // approach 1: binary search
-    // binary search on values
+    // binary search on values. Because although matrix is sorted in both rows and columns,
+    // they are not sorted consistently going from the end of element in a row to the start
+    // of the elements of the next row. So, binary search cannot be applied to index, but we
+    // can binary search on the value where lo is the minimum element and hi is the maximum element
 
     // time: O(row * col * log(max - min))
 

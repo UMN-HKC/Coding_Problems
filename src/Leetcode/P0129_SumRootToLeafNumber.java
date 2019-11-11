@@ -48,6 +48,27 @@ public class P0129_SumRootToLeafNumber {
 
         }
         return runningSum;
+    }
 
+    // approach 3: iterative with only one stack, modify tree value
+    public int sumNumbers(TreeNode root) {
+        int sum = 0;
+        Stack<TreeNode> s = new Stack<>();
+        while (!s.empty() || root != null) {
+            if (root != null) {
+                s.push(root);
+                if (root.left == null && root.right == null) {
+                    sum += root.val;
+                }
+                if (root.left != null) root.left.val = root.val * 10 + root.left.val;
+                root = root.left;
+            }
+            else {
+                root = s.pop();
+                if (root.right != null) root.right.val = root.val * 10 + root.right.val;
+                root = root.right;
+            }
+        }
+        return sum;
     }
 }

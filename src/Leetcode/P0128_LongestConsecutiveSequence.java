@@ -25,7 +25,42 @@ public class P0128_LongestConsecutiveSequence {
         return max;
     }
 
-    // approach2: hashmap, keep a boundary
+    // approach 2: hashmap
+    // The basic idea is to store each unique number to the hashmap and its boolean value
+    // indicates whether it is visited or not. Then, we will iterate the original number again
+    // and for each number, we get its lower bound of consecutive number and upper bound of
+    // its consecutive number and for each visited number mark its map value as true. Update
+    // result during each search.
+
+    public int longestConsecutive_2(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int len = nums.length;
+        Map<Integer, Boolean> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, false);
+        }
+        int max = 1;
+        for (int num : nums) {
+            if (map.containsKey(num)) {
+                if (!map.get(num)) {
+                    int upper = num + 1;
+                    int lower = num - 1;
+                    while (map.containsKey(upper) && !map.get(upper)) {
+                        map.put(upper, true);
+                        upper++;
+                    }
+                    while (map.containsKey(lower) && !map.get(lower)) {
+                        map.put(lower, true);
+                        lower--;
+                    }
+                    max = Math.max(upper - lower - 1, max);
+                }
+            }
+        }
+        return max;
+    }
+
+    // approach 3: hashmap, keep a boundary
     // 1. See if n - 1 and n + 1 exist in the map, and if so, it means there is an existing sequence next to n.
     //    Variables left and right will be the length of those two sequences, while 0 means there is no sequence
     //    and n will be the boundary point later. Store (left + right + 1) as the associated value to key n into the map.
@@ -57,7 +92,7 @@ public class P0128_LongestConsecutiveSequence {
         return max;
     }
 
-    // approach 2: union find
+    // approach 4: union find
 
     public int longestConsecutive(int[] nums) {
         if (nums == null || nums.length == 0) {
