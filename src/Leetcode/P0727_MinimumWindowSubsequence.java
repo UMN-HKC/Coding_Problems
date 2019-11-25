@@ -1,6 +1,6 @@
 package Leetcode;
 
-public class P0727_MinimumWindowSubsequence {
+public class    P0727_MinimumWindowSubsequence {
 
     // approach 1: DP
 

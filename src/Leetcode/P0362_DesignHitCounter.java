@@ -5,7 +5,7 @@ public class P0362_DesignHitCounter {
     // approach 1: circular array
 
     // The key is that we will keep an rolling array of size 300 and simulate circular array
-    // but in here we will keep couple of metadata: lastTime, lastPos, etc.
+    // but in here we will keep a metadata: lastTime
     // For both required functions, we will call move(). What move() does is that it will
     // clear out all values inside 'gap' where
     // 'gap' is the difference between lastTime and current timestamp, which is also
@@ -16,27 +16,25 @@ public class P0362_DesignHitCounter {
     // we want to move the end pointer and meanwhile delete values inside gap.
 
 
-    int[] rolling;
-    int total;
-    int N;
-    int lastTime;
-    int lastPos;
     /** Initialize your data structure here. */
+    int lastTime;
+    int N;
+    int total;
+    int[] cnt;
     public HitCounter() {
         N = 300;
-        rolling = new int[N];
-        total = 0;
-        lastPos = 0;
+        cnt = new int[N];
         lastTime = 0;
+        total = 0;
     }
-
 
     /** Record a hit.
      @param timestamp - The current timestamp (in seconds granularity). */
     public void hit(int timestamp) {
         move(timestamp);
-        rolling[lastPos]++;
         total++;
+        cnt[timestamp % N]++;
+        lastTime = timestamp;
     }
 
     /** Return the number of hits in the past 5 minutes.
@@ -45,13 +43,11 @@ public class P0362_DesignHitCounter {
         move(timestamp);
         return total;
     }
-    public void move(int timestamp) {
-        int gap = Math.min(N, timestamp - lastTime);
-        for (int i = 1; i <= gap; i++) {
-            total -= rolling[(lastPos + i) % 300];
-            rolling[(lastPos + i) % 300] = 0;
+    private void move(int timestamp) {
+        int delta = Math.min(300, timestamp - lastTime);
+        for (int i = 1; i <= delta; i++) {
+            total -= cnt[(lastTime + i) % 300];
+            cnt[(lastTime + i) % 300] = 0;
         }
-        lastPos = (lastPos + gap) % 300;
-        lastTime = timestamp;
     }
 }

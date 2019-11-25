@@ -3,7 +3,37 @@ import java.util.*;
 
 public class P0022_GenerateParentheses {
 
-    // idea borrowed from discussion
+    // approach 1: dfs + memo
+
+    // time: factorial
+
+    public List<String> generateParenthesis(int n) {
+        if (n == 0) return new ArrayList<>();
+        Map<Integer, Set<String>> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
+        set.add("()");
+        map.put(1, set);
+        dfs(map, 1, n);
+        return new ArrayList(map.get(n));
+    }
+    private void dfs(Map<Integer, Set<String>> map, int cur, int N) {
+        if (cur == N) return;
+        Set<String> set = map.get(cur);
+        Set<String> next = new HashSet<>();
+        for (String s : set) {
+            for (int i = 0; i < s.length(); i++) {
+                String par = s.substring(0, i) + "()" + s.substring(i);
+                if (!next.contains(par)) {
+                    next.add(par);
+                }
+            }
+        }
+        map.put(cur + 1, next);
+        dfs(map, cur + 1, N);
+    }
+
+    // approach 2: idea borrowed from discussion board
+
     // only add open parentheses when we have not use up all open parentheses
     // only add close parentheses when we have more open parentheses
     // The above two conditions will result in valid parentheses for our final result

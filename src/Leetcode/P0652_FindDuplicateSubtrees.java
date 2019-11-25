@@ -4,6 +4,9 @@ import java.util.*;
 public class P0652_FindDuplicateSubtrees {
 
     // approach 1: post-order traversal
+    // The basic idea is to serialize the tree and once we find a serialized string that
+    // appeared twice in our map, we know that it is a duplicate subtree. We only add the
+    // subtree when it hits twice to prevent duplication in our result list.
 
     // time: O(n^2)
     // space: O(n^2)

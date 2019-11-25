@@ -29,7 +29,36 @@ public class P0109_ConvertSortedListToBST {
         return root;
     }
 
-    // approach 2: slow and fast pointers
+    // approach 2: inorder traversal
+    // use a global listnode pointer to achieve inorder traversal
+
+    // time: O(n)
+    // space: O(logn)
+
+    private ListNode ptr;
+    public TreeNode sortedListToBST(ListNode head) {
+        ListNode itr = head;
+        ptr = head;
+        int cnt = 0;
+        while (itr != null) {
+            itr = itr.next;
+            cnt++;
+        }
+        return buildTree(1, cnt);
+    }
+    private TreeNode buildTree(int l, int r) {
+        if (l > r) return null;
+        int m = l + (r - l) / 2;
+        TreeNode left = buildTree(l, m - 1);
+        TreeNode root = new TreeNode(ptr.val);
+        ptr = ptr.next;
+        TreeNode right = buildTree(m + 1, r);
+        root.left = left;
+        root.right = right;
+        return root;
+    }
+
+    // approach 3: slow and fast pointers
     // the main idea is to use a slow and fast pointer to find a root node and
     // meanwhile keep a prev pointer so that we can divide the list by setting
     // root's left list as left subtree and root's right subtree as right subtree

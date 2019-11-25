@@ -17,6 +17,9 @@ public class P0287_FindTheDuplicateNumber {
 
     public int findDuplicate(int[] nums) {
         int slow = 0, fast = 0;
+        // note that we have to do while(true) because we need to let pointers move first
+        // to simulate linkedlist pointer movements. If we do while(nums[slow] != nums[nums[fast]])
+        // pointers may not move even one step when loop ends.
         while (true) {
             slow = nums[slow];
             fast = nums[fast];

@@ -26,6 +26,7 @@ public class P0004_MedianOfTwoSortedArray {
         int maxLeftX = Integer.MIN_VALUE, maxLeftY = Integer.MIN_VALUE;
         int minRightX = Integer.MAX_VALUE, minRightY = Integer.MAX_VALUE;
         // in here, start means there is no element to the left, and end means there are x elements to the left
+        // we are doing binary search on the number of elements to the left instead of binary search on index
         int start = 0, end = x;
 
         while (start <= end) {

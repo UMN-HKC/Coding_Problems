@@ -35,6 +35,7 @@ public class P0140_WordBreakII {
      */
 
     // time: O(2^n) in worst case
+    // since in the worst case, all combinations are valid
     // s = "aaaaaaaa", dict = ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa"]
     // space: O(2^n)
 

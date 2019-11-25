@@ -2,38 +2,7 @@ package Leetcode;
 
 public class P0209_MinimumSizeSubarraySum {
 
-    // approach 1:
-
-    // time: O(n)
-    // space: O(n)
-
-    public int minSubArrayLen_1(int s, int[] nums) {
-        if (nums == null || nums.length == 0) return 0;
-        int[] runningSum = new int[nums.length + 1];
-        for (int i = 1; i < runningSum.length; i++) {
-            runningSum[i] = runningSum[i - 1] + nums[i - 1];
-        }
-        int l = 0, r = 1, min = Integer.MAX_VALUE;
-        while (r < runningSum.length) {
-            // try to expand and have sum equaling to s first
-            // make it valid
-            if (runningSum[r] - runningSum[l] < s) {
-                r++;
-            }
-            else {
-                // while it is valid, update result and make it invalid again
-                while (l < r && runningSum[r] - runningSum[l] >= s) {
-                    // update result
-                    min = Math.min(min, r - l);
-                    // shrink
-                    l++;
-                }
-            }
-        }
-        return min == Integer.MAX_VALUE ? 0 : min;
-    }
-
-    // approach 2:
+    // approach 1: sliding window  (best)
 
     // time: O(n)
     // space: O(1)
@@ -59,7 +28,9 @@ public class P0209_MinimumSizeSubarraySum {
         return min == Integer.MAX_VALUE ? 0 : min;
     }
 
-    // approach 3: for follow-up asking O(nlogn) solution, interesting approach
+    // two binary search approaches:
+
+    // approach 2.1:
 
     // Basically we do binary search on the window size. Say, array length is k.
     // We first see if window size of k/2 can contain a sum equaling s by moving
@@ -94,5 +65,39 @@ public class P0209_MinimumSizeSubarraySum {
             if (sum >= s) return true;
         }
         return false;
+    }
+
+    // approach 2.2: binary search
+
+    // The basic idea is that we will build a prefix sum array and since the prefix sum array
+    // is ordered, we can iterate each lower bound value and apply binary search to find
+    // its upper bound that satisfies our condition.
+
+    // time: O(nlogn)
+
+    public int minSubArrayLen(int s, int[] nums) {
+        int[] prefixSum = new int[nums.length + 1];
+        for (int i = 0; i < nums.length; i++) {
+            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        }
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int end = helper(prefixSum, prefixSum[i] + s, i + 1, prefixSum.length - 1);
+            if (end == prefixSum.length) break;
+            min = Math.min(min, end - i);
+        }
+        return min == Integer.MAX_VALUE ? 0 : min;
+    }
+    private int helper(int[] prefixSum, int target, int s, int e) {
+        while (s < e) {
+            int mid = s + (e - s) / 2;
+            if (prefixSum[mid] < target) {
+                s = mid + 1;
+            }
+            else {
+                e = mid;
+            }
+        }
+        return prefixSum[s] >= target ? s : s + 1;
     }
 }
