@@ -42,4 +42,40 @@ public class P0138_CopyListWithRandomPointer {
         }
         return copy.next;
     }
+
+    // approach 2: O(1) extra space
+    // 3 iterations:
+    // - make a copy node for each original node which follows directly after original node
+    // - connect each copy node to its respective random copy node
+    // - extract copy list and restore original list
+
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        Node cur = head;
+        while (cur != null) {
+            Node next = cur.next;
+            cur.next = new Node(cur.val);
+            cur.next.next = next;
+            cur = cur.next.next;
+        }
+        Node copy = head.next;
+        cur = head;
+        while (cur != null) {
+            if (cur.random != null) {
+                copy.random = cur.random.next;
+            }
+            cur = cur.next.next;
+            if (cur != null) copy = copy.next.next;
+        }
+        Node dummy = new Node(-1);
+        Node itr = dummy;
+        cur = head;
+        while (cur != null) {
+            itr.next = cur.next;
+            cur.next = cur.next.next;
+            cur = cur.next;
+            itr = itr.next;
+        }
+        return dummy.next;
+    }
 }

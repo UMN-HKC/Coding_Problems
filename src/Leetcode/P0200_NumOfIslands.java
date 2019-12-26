@@ -1,11 +1,12 @@
 package Leetcode;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class P0200_NumOfIslands {
     int[][] dirs = {{1,0},{0,1}, {-1,0}, {0,-1}};
-    // dfs approach
+
+    // approach 1: dfs
+
     public int numIslands_dfs(char[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
@@ -37,6 +38,8 @@ public class P0200_NumOfIslands {
         }
         return;
     }
+
+    // approach 2: bfs
 
     public int numIslands_bfs(char[][] grid) {
         if (grid == null || grid.length == 0) {
@@ -76,5 +79,45 @@ public class P0200_NumOfIslands {
 
     public boolean isInside(int h, int w, int x, int y) {
         return (x < h) && (x >= 0) && (y < w) && (y >= 0);
+    }
+
+    // approach 3: union find
+
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+        int m = grid.length, n = grid[0].length;
+        int[] ids = new int[m * n];
+        Arrays.fill(ids, -1);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    int curId = i * n + j;
+                    ids[curId] = curId;
+                    if (j > 0 && grid[i][j - 1] == '1') {
+                        int leftId = i * n + j - 1;
+                        int px = find(ids, curId);
+                        int py = find(ids, leftId);
+                        ids[px] = ids[py];
+                    }
+                    if (i > 0 && grid[i - 1][j] == '1') {
+                        int topId = (i - 1) * n + j;
+                        int px = find(ids, curId);
+                        int py = find(ids, topId);
+                        ids[px] = ids[py];
+                    }
+                }
+            }
+        }
+        Set<Integer> set = new HashSet<>();
+        for (int id : ids) {
+            if (id != -1) set.add(find(ids, id));
+        }
+        return set.size();
+    }
+    private int find(int[] ids, int x) {
+        if (ids[x] != x) {
+            ids[x] = find(ids, ids[x]);
+        }
+        return ids[x];
     }
 }

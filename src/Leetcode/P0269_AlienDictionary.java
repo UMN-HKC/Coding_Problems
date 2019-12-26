@@ -5,57 +5,67 @@ public class P0269_AlienDictionary {
 
     // approach 1: topological sort
 
+    // compare two words, after first different characters, we need to stop comparing
+    // further and break the loop immediately. After constructing the frequency array, we add all
+    // 0 indegree characters which also exist in our map to a queue and start topological sort.
+    // Finally, we check if the final string we build contains all the character we need.
+
+    // O(V + E). Space: O(V). V最大26. Edge最大为words.length.
+
     public String alienOrder(String[] words) {
-        if (words == null || words.length == 0) return "";
-        int[] indegree = new int[26];
-        Arrays.fill(indegree, -1);
-        Map<Character, Set<Character>> map = new HashMap<>();
+        int[] freq = new int[26];
+        Map<Character, Set<Character>> charToListMap = new HashMap<>();
+
+        // build graph
+        buildGraph(words, freq, charToListMap);
+
+        // topological sort
+        StringBuilder sb = new StringBuilder();
+        Queue<Character> q = new LinkedList<>();
+        topologicalSort(sb, q, freq, charToListMap);
+        return sb.length() == charToListMap.size() ? sb.toString() : "";
+    }
+    private void topologicalSort(StringBuilder sb, Queue<Character> q, int[] freq, Map<Character, Set<Character>> charToListMap) {
+        for (char c = 'a'; c <= 'z'; c++) {
+            if (charToListMap.containsKey(c) && freq[c - 'a'] == 0) q.offer(c);
+        }
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                char c = q.poll();
+                sb.append(c);
+                for (char next : charToListMap.get(c)) {
+                    if (--freq[next - 'a'] == 0) {
+                        q.offer(next);
+                    }
+                }
+            }
+        }
+    }
+    private void buildGraph(String[] words, int[] freq, Map<Character, Set<Character>> charToListMap) {
         for (String word : words) {
             for (char c : word.toCharArray()) {
-                indegree[c - 'a'] = 0;
+                if (!charToListMap.containsKey(c)) {
+                    charToListMap.put(c, new HashSet<>());
+                }
             }
         }
         for (int i = 0; i < words.length - 1; i++) {
             String word1 = words[i];
-            String word2 = words[i+1];
+            String word2 = words[i + 1];
             int len = Math.min(word1.length(), word2.length());
             for (int j = 0; j < len; j++) {
-                if (word1.charAt(j) != word2.charAt(j)) {
-                    Set<Character> set = new HashSet<>();
-                    if (map.containsKey(word1.charAt(j))) set = map.get(word1.charAt(j));
-                    if (!set.contains(word2.charAt(j))) {
-                        set.add(word2.charAt(j));
-                        map.put(word1.charAt(j), set);
-                        indegree[word2.charAt(j) - 'a']++;
+                char c1 = word1.charAt(j);
+                char c2 = word2.charAt(j);
+                if (c1 != c2) {
+                    if (!charToListMap.get(c1).contains(c2)) {
+                        freq[c2 - 'a']++;
+                        charToListMap.get(c1).add(c2);
                     }
+                    // need to break as soon as we find a different pair of characters
                     break;
                 }
             }
         }
-
-        Queue<Character> queue = new LinkedList<>();
-        for (int i = 0; i < indegree.length; i++) {
-            if (indegree[i] == 0) {
-                queue.offer((char)('a' + i));
-            }
-        }
-        StringBuilder sb = new StringBuilder();
-        while (!queue.isEmpty()) {
-            char c = queue.poll();
-            sb.append(c);
-            if (map.containsKey(c)) {
-                for (char child : map.get(c)) {
-                    if (--indegree[child - 'a'] == 0) {
-                        queue.offer(child);
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < 26; i++) {
-            if (indegree[i] > 0) {
-                return "";
-            }
-        }
-        return sb.toString();
     }
 }
