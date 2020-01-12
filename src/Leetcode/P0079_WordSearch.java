@@ -2,6 +2,10 @@ package Leetcode;
 
 public class P0079_WordSearch {
 
+    // approach 1: dfs
+    // time: O(m * n * (4 ^ L)) where M*N is the size of the board and we have 4^L for each cell because of the recursion
+    // space: O(m * n + L)
+
     int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     public boolean exist(char[][] board, String word) {
         if (board == null || board.length == 0 || board[0].length == 0) return false;

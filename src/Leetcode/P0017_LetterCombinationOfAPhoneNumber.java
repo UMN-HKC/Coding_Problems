@@ -3,34 +3,55 @@ import java.util.*;
 
 public class P0017_LetterCombinationOfAPhoneNumber {
 
-    // initial approach: backtracking
+    // approach 1: dfs + backtracking
 
-    public static String[] rep = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    // time: O(4^n)
+    // space: O(n) stack space + result space
+
+    private static final String[] MAPPINGS = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     public List<String> letterCombinations(String digits) {
         List<String> res = new ArrayList<>();
-        if (digits == null || digits.length() == 0) {
-            return res;
-        }
-        dfs(res, 0, digits, new StringBuilder());
+        if (digits == null || digits.length() == 0) return res;
+        StringBuilder sb = new StringBuilder();
+        dfs(res, digits, 0, sb);
         return res;
     }
-    public void dfs(List<String> res, int index, String digits, StringBuilder sb) {
-        // goal
-        if (sb.length() == digits.length()) {
-            res.add(new String(sb));
-            return;
+    private void dfs(List<String> res, String digits, int idx, StringBuilder sb) {
+        if (idx == digits.length()) {
+            res.add(sb.toString());
         }
-        for (int i = index; i < digits.length(); i++) {
-            int pos = digits.charAt(i) - '0';
-            String seq = rep[pos];
-            for (int j = 0; j < seq.length(); j++) {
-                // choice
-                sb.append(seq.charAt(j));
-                dfs(res, i + 1, digits, sb);
-                // backtrack
+        else {
+            int digit = digits.charAt(idx) - '0';
+            String abs = MAPPINGS[digit];
+            for (int i = 0; i < abs.length(); i++) {
+                sb.append(abs.charAt(i));
+                dfs(res, digits, idx + 1, sb);
                 sb.setLength(sb.length() - 1);
             }
         }
-        return;
+    }
+
+    // approach 2: bfs
+
+    // time: O(4^n)
+    // space: no stack space used, only space for result
+
+    public List<String> letterCombinations_2(String digits) {
+        LinkedList<String> res = new LinkedList<>();
+        if (digits == null || digits.length() == 0) return res;
+
+        res.add("");
+        for (char c : digits.toCharArray()) {
+            int size = res.size();
+            int digit = c - '0';
+            String str = MAPPINGS[digit];
+            for (int i = 0; i < size; i++) {
+                String pre = res.removeFirst();
+                for (int j = 0; j < str.length(); j++) {
+                    res.add(pre + str.charAt(j));
+                }
+            }
+        }
+        return res;
     }
 }
