@@ -3,6 +3,7 @@ package Leetcode;
 public class P0010_RegularExpressionMatching {
 
     // approach 1: DP
+    // https://www.youtube.com/watch?v=l3hda49XcDE&t=499s
     // dp[i][j] represents s[0,i] matches p[0, j]
 
     public boolean isMatch_3(String s, String p) {
@@ -20,7 +21,14 @@ public class P0010_RegularExpressionMatching {
                 }
                 else if (p.charAt(j - 1) == '*') {
                     // '*' act as previous pattern character only when the previous
-                    // pattern character is the could match the current input character
+                    // pattern character could match the current input character
+                    // think about the following example to figure out why we do dp[i - 1][j]:
+                    //    x a *
+                    //  x
+                    //  a
+                    //  a
+                    // because the premise that we could use '*' is that including '*' will
+                    // match input string before the current input character!
                     if (s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.') {
                         dp[i][j] = dp[i - 1][j];
                     }

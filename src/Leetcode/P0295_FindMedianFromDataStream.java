@@ -50,39 +50,46 @@ public class P0295_FindMedianFromDataStream {
     }
 
     // approach 2: min & max heaps
+    // https://leetcode.com/problems/find-median-from-data-stream/discuss/74047/JavaPython-two-heap-solution-O(log-n)-add-O(1)-find
+    // Any time before we add a new number, there are two scenarios, (total n numbers, k = n / 2):
+    //
+    // (1) length of (small, large) == (k, k)
+    // (2) length of (small, large) == (k, k + 1)
+    // After adding the number, total (n + 1) numbers, they will become:
+    //
+    // (1) length of (small, large) == (k, k + 1)
+    // (2) length of (small, large) == (k + 1, k + 1)
+
     // add: O(logn)
     // find: O(1)
 
-    PriorityQueue<Integer> minHeap;
-    PriorityQueue<Integer> maxHeap;
-
+    private PriorityQueue<Integer> min;
+    private PriorityQueue<Integer> max;
+    private boolean even;
     public MedianFinder() {
-        minHeap = new PriorityQueue<>((a, b) -> a - b);
-        maxHeap = new PriorityQueue<>((a, b) -> b - a);
+        min = new PriorityQueue<>();
+        max = new PriorityQueue<>((a, b) -> b - a);
+        even = true;
     }
 
     public void addNum(int num) {
-        // be careful that we push num to max heap first and then
-        // poll a max num from max heap and offer it to min heap
-        // by offering num to one heap first, we make sure the num
-        // pushed gets sorted and next when we maintain the size of
-        // two heaps, we won't mess up the property that maximum element
-        // in max heap is smaller than minimum element in min heap
-
-        // Afterwards, we do a check to make sure max heap's size
-        // is equal or greater than min heap by 1.
-        maxHeap.offer(num);
-        minHeap.offer(maxHeap.poll());
-        if (minHeap.size() > maxHeap.size()) {
-            maxHeap.offer(minHeap.poll());
-        }
-    }
-    public double findMedian() {
-        if ((minHeap.size() + maxHeap.size()) % 2 == 0) {
-            return (double)(minHeap.peek() + maxHeap.peek()) / 2;
+        if (even) {
+            max.offer(num);
+            min.offer(max.poll());
         }
         else {
-            return (double)maxHeap.peek();
+            min.offer(num);
+            max.offer(min.poll());
+        }
+        even = !even;
+    }
+
+    public double findMedian() {
+        if (even) {
+            return (double)(max.peek() + min.peek()) / 2;
+        }
+        else {
+            return (double)min.peek();
         }
     }
 }
