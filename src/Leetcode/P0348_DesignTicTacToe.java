@@ -87,6 +87,10 @@ public class P0348_DesignTicTacToe {
     // to keep track of placement status for each row and column. This is
     // doable when we mark player1's movement as 1 and player2's movement as -1.
 
+    // since as long as one row, one column, one position in diagonal or one
+    // position in antidiagonal is occupied, the other player does not have
+    // chance to win In terms of these positions. So we only need rows[], cols[], diagonal, antidiagonal
+
     // And we only need two variables to keep track of main diagonal and main anti diagonal
     // because it is only possible for two main diagonals to have n places.
 
