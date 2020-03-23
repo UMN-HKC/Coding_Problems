@@ -21,7 +21,7 @@ public class P0362_DesignHitCounter {
     int N;
     int total;
     int[] cnt;
-    public HitCounter() {
+    public P0362_DesignHitCounter() {
         N = 300;
         cnt = new int[N];
         lastTime = 0;

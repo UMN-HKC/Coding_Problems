@@ -22,19 +22,17 @@ public class P0036_ValidSudoku {
 //    second block is 0,3 (not 0,1); Similarly, to move to next block vertically, use / and multiply by 3 as explained above.
 
     public boolean isValidSudoku(char[][] board) {
-        for (int i = 0; i < board.length; i++) {
-            Set<Character> rows = new HashSet<>();
-            Set<Character> cols = new HashSet<>();
-            Set<Character> cubes = new HashSet<>();
-            for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] != '.' && !rows.add(board[i][j]))  return false;
-                if (board[j][i] != '.' && !cols.add(board[j][i]))  return false;
-
-                int rowIndex = 3 * (i / 3);
-                int colIndex = 3 * (i % 3);
-                if (board[rowIndex + j / 3][colIndex + j % 3] != '.' && !cubes.add(board[rowIndex + j / 3][colIndex + j % 3])) {
-                    return false;
-                }
+        for (int i = 0; i < 9; i++) {
+            Set<Character> rowSet = new HashSet<>();
+            Set<Character> colSet = new HashSet<>();
+            Set<Character> boxSet = new HashSet<>();
+            int boxRow = 3 * (i / 3);
+            int boxCol = 3 * (i % 3);
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.' && !rowSet.add(board[i][j])) return false;
+                if (board[j][i] != '.' && !colSet.add(board[j][i])) return false;
+                if (board[boxRow + j / 3][boxCol + j % 3] != '.'
+                        && !boxSet.add(board[boxRow + j / 3][boxCol + j % 3])) return false;
             }
         }
         return true;
