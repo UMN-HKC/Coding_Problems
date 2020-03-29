@@ -6,6 +6,8 @@ public class P0050_Pow {
     // with an iterative solution with bit manipulation but failed to implement it out
 
     // approach 1: recursive approach (idea borrowed from discussion board)
+    // time: O(logn)
+    // space: O(logn)
 
     public double myPow(double x, int n) {
         if (n == 0) return 1;
@@ -22,7 +24,8 @@ public class P0050_Pow {
 
 
     // iterative approach: bit manipulation
-    // for example,
+    // time: O(logn)
+    // space: O(1)
 
     /***
      for example,

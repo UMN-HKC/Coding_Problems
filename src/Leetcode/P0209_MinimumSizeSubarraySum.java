@@ -40,7 +40,7 @@ public class P0209_MinimumSizeSubarraySum {
     // shrinking or expanding the window.
 
     // time: O(nlogn)
-    // space: O(n)
+    // space: O(1)
 
     public int minSubArrayLen_3(int s, int[] nums) {
         if (nums == null || nums.length == 0) return 0;
@@ -74,30 +74,34 @@ public class P0209_MinimumSizeSubarraySum {
     // its upper bound that satisfies our condition.
 
     // time: O(nlogn)
+    // space: O(n)
 
     public int minSubArrayLen(int s, int[] nums) {
-        int[] prefixSum = new int[nums.length + 1];
+        if (nums == null || nums.length == 0) return 0;
+        int[] runningSum = new int[nums.length + 1];
+
         for (int i = 0; i < nums.length; i++) {
-            prefixSum[i + 1] = prefixSum[i] + nums[i];
+            runningSum[i + 1] = runningSum[i] + nums[i];
         }
+
         int min = Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length; i++) {
-            int end = helper(prefixSum, prefixSum[i] + s, i + 1, prefixSum.length - 1);
-            if (end == prefixSum.length) break;
-            min = Math.min(min, end - i);
+        for (int i = 0; i < runningSum.length - 1; i++) {
+            // for each iteration, we try to find the leftmost element
+            // to the right of number at index i that the cumulative
+            // sum between them is greater or equal to s
+            int l = i + 1, r = runningSum.length - 1;
+            while (l < r) {
+                int m = l + (r - l) / 2;
+                if (runningSum[m] - runningSum[i] >= s) {
+                    r = m;
+                }
+                else {
+                    l = m + 1;
+                }
+            }
+            if (runningSum[r] - runningSum[i] >= s) min = Math.min(min, r - i);
+
         }
         return min == Integer.MAX_VALUE ? 0 : min;
-    }
-    private int helper(int[] prefixSum, int target, int s, int e) {
-        while (s < e) {
-            int mid = s + (e - s) / 2;
-            if (prefixSum[mid] < target) {
-                s = mid + 1;
-            }
-            else {
-                e = mid;
-            }
-        }
-        return prefixSum[s] >= target ? s : s + 1;
     }
 }

@@ -20,9 +20,14 @@ public class P0378_KthSmallestElementInASortedArray {
             int cnt = 0;
             int j = n - 1;
             for (int i = 0; i < m; i++) {
+                // instead of doing matrix[i][j] >= mid, we set condition to be
+                // matrix[i][j] > mid because we want to include/count the potential target
+                // value as well into cnt variable.
                 while (j >= 0 && matrix[i][j] > mid) j--;
                 cnt += j + 1;
             }
+            // if the total number of elements that are less than or equal to mid
+            // is less than kth smallest number, then we know search space will be [mid + 1, hi]
             if (cnt < k) {
                 lo = mid + 1;
             }

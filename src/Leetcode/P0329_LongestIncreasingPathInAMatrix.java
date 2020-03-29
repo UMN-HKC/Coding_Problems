@@ -3,6 +3,7 @@ package Leetcode;
 public class P0329_LongestIncreasingPathInAMatrix {
 
     // approach 1: DFS (TLE)
+    // note that we do not need a visited matrix because we only visit strictly increasing numbers
     // time: O(2^(m+n))
     int max = 0;
     int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
