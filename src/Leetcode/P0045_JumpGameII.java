@@ -46,6 +46,7 @@ public class P0045_JumpGameII {
     }
 
     // approach 2: still greedy thinking, but smartly applies implicit breadth first search thinking
+    // we can view curEnd as the current level, and curFarthest as the next level for bfs.
 
     // time: O(n)
 

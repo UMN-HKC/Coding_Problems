@@ -35,7 +35,47 @@ public class P0155_MinStack {
         return minSofar.peek();
     }
 
-    // approach 2: using only one stack and variable min
+    // approach 2: still using two stacks but instead of pushing min to
+    // minStack each time, we assign a counter to the min value which represents
+    // how many times should the stack pops until the minimum does not hold anymore
+
+    /** initialize your data structure here. */
+    Stack<Integer> numberStack;
+    Stack<int[]> minStack;
+    public MinStack() {
+        numberStack = new Stack<>();
+        minStack = new Stack<>();
+    }
+
+    public void push(int x) {
+        numberStack.push(x);
+        if (minStack.empty() || minStack.peek()[0] > x) {
+            minStack.push(new int[]{x, 1});
+        }
+        else {
+            minStack.peek()[1]++;
+        }
+    }
+
+    public void pop() {
+        numberStack.pop();
+        if (minStack.peek()[1] > 1) {
+            minStack.peek()[1]--;
+        }
+        else {
+            minStack.pop();
+        }
+    }
+
+    public int top() {
+        return numberStack.peek();
+    }
+
+    public int getMin() {
+        return minStack.peek()[0];
+    }
+
+    // approach 3: using only one stack and variable min
 
     // only push the old minimum value when the current
     // minimum value changes after pushing the new value x

@@ -39,4 +39,17 @@ public class P0053_MaximumSubarray {
         }
         return max;
     }
+
+    // approach 3:
+
+    public int maxSubArray(int[] nums) {
+
+        int max = nums[0];
+        int accum = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            max = Math.max(max, Math.max(accum + nums[i], nums[i]));
+            accum = Math.max(nums[i], accum + nums[i]);
+        }
+        return max;
+    }
 }

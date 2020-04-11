@@ -12,7 +12,7 @@ public class P0363_MaxSumOfRectangleNoLargerThanK {
         // for step1, we basically transform 2-d matrix submatrix sum to 1-d subarray sum
     // step2: use treeset to help find the maximum sum that is less than k
 
-    // time: O(row * (col^2) * (row*log(row)))
+    // time: O((col^2) * (row*log(row)))
     // spaceL O(row)
 
     public int maxSumSubmatrix(int[][] matrix, int k) {

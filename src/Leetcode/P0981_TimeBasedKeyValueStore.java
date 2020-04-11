@@ -1,8 +1,6 @@
 package Leetcode;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class P0981_TimeBasedKeyValueStore {
 
@@ -33,5 +31,44 @@ public class P0981_TimeBasedKeyValueStore {
         Map.Entry<Integer, String> entry = order.floorEntry(timestamp);
         if (entry == null) return "";
         return entry.getValue();
+    }
+
+    // a little improve, use list to store timestamps.
+    // because timestamps are guaranteed to be strictly increasing, so inserting them
+    // into the list will result in a sorted list and we can apply binary search for get()
+    // but without using treemap, we reduce set() operation to be O(1) instead of O(logn)
+    
+    Map<String, List<Integer>> map;
+    Map<Integer, String> valueMap;
+    public TimeMap() {
+        map = new HashMap<>();
+        valueMap = new HashMap<>();
+    }
+
+    public void set(String key, String value, int timestamp) {
+        if (!map.containsKey(key)) {
+            map.put(key, new ArrayList<>());
+        }
+        map.get(key).add(timestamp);
+        valueMap.put(timestamp, value);
+    }
+
+    public String get(String key, int timestamp) {
+        if (!map.containsKey(key)) return "";
+        List<Integer> list = map.get(key);
+        int l = 0, r = list.size() - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (list.get(m) == timestamp) {
+                return valueMap.get(timestamp);
+            }
+            if (list.get(m) < timestamp) {
+                l = m + 1;
+            }
+            else {
+                r = m - 1;
+            }
+        }
+        return r >= 0 ? valueMap.get(list.get(r)) : "";
     }
 }
