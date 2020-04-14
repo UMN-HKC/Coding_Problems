@@ -5,9 +5,11 @@ public class P0072_EditDistance {
     // approach 1: DP
 
     // dp[i][j] means the minimum operations taken to convert substring word1[0,i] to substring of word2[0,j]
-    //   - dp(i - 1, j) represents delete operation
-    //   - dp(i, j - 1) represents insert operation
-    //   - dp(i - 1, j - 1) represents replace operation
+
+    //   - dp(i - 1, j) represents delete operation    "(ben)y" -> "(eph)"
+    //   - dp(i, j - 1) represents insert operation    "(beny)" -> "(ep)h"
+    //   - dp(i - 1, j - 1) represents replace operation    "(ben)y" -> "(ep)h"
+    //   - when characters are the same dp[i][j] = dp[i-1][j-1]
 
     public int minDistance(String word1, String word2) {
         if (word1 == null || word1.length() == 0) return word2.length();

@@ -20,9 +20,11 @@ public class P0097_InterleavingString {
         boolean[][] dp = new boolean[s1.length() + 1][s2.length() + 1];
         dp[0][0] = true;
         for (int i = 1; i < dp.length; i++) {
+            // remember to add dp[i - 1][0]
             dp[i][0] = dp[i-1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
         }
         for (int i = 1; i < dp[0].length; i++) {
+            // remember to add dp[0][i - 1]
             dp[0][i] = dp[0][i-1] && s2.charAt(i - 1) == s3.charAt(i - 1);
         }
         for (int i = 1; i < dp.length; i++) {
