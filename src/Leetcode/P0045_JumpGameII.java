@@ -48,6 +48,10 @@ public class P0045_JumpGameII {
     // approach 2: still greedy thinking, but smartly applies implicit breadth first search thinking
     // we can view curEnd as the current level, and curFarthest as the next level for bfs.
 
+    // or could think at each position, we can a laddar of length nums[i].
+    // we keep a current laddar and maxladder
+    // ref: https://www.youtube.com/watch?v=vBdo7wtwlXs
+
     // time: O(n)
 
     public int jump_greedy_linear(int[] A) {

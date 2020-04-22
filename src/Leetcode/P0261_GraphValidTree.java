@@ -84,6 +84,8 @@ public class P0261_GraphValidTree {
     }
 
     // approach 3: union find
+
+    // time: O(n + e lg*n)
     class UF {
         int[] id, cnt;
         int size;

@@ -12,38 +12,41 @@ public class P0743_NetworkDelayTime {
     // space: O(V + E)
 
     public int networkDelayTime(int[][] times, int N, int K) {
-        Map<Integer, List<int[]>> map = new HashMap<>();
-        for (int[] time : times) {
-            int from = time[0];
-            int to = time[1];
-            int t = time[2];
-            if (!map.containsKey(from)) {
-                map.put(from, new ArrayList<>());
-            }
-            map.get(from).add(new int[]{to, t});
-        }
-        int maxTime = 0;
         boolean[] visited = new boolean[N + 1];
+        Map<Integer, List<int[]>> map = new HashMap<>();
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        for (int[] time : times) {
+            int s = time[0];
+            int d = time[1];
+            int t = time[2];
+            map.putIfAbsent(s, new ArrayList<>());
+            map.get(s).add(new int[]{d, t});
+        }
         pq.offer(new int[]{K, 0});
-
+        int endTime = 0;
+        int cnt = N;
         while (!pq.isEmpty()) {
-            int[] cur = pq.poll();
-            int from = cur[0];
-            int t = cur[1];
-            if (visited[from]) continue;
-            visited[from] = true;
-            N--;
-            maxTime = Math.max(maxTime, t);
-            if (map.containsKey(from)) {
-                List<int[]> neighbors = map.get(from);
-                for (int[] neighbor : neighbors) {
-                    int[] next = new int[]{neighbor[0], t + neighbor[1]};
-                    pq.offer(next);
+            int[] pair = pq.poll();
+            int curNode = pair[0];
+            int curTime = pair[1];
+            endTime = curTime;
+            // here we check if the node is already visited because we might have already
+            // visited and updated this node but note that we might have pushed multiple
+            // same node with different time to our queue. So once we have done with one
+            // node, even if there are more records on this node, we want to skip them.
+            if (visited[curNode]) continue;
+            visited[curNode] = true;
+            cnt--;
+            if (cnt == 0) break;
+            if (map.containsKey(curNode)) {
+                for (int[] neighbor : map.get(curNode)) {
+                    if (!visited[neighbor[0]]) {
+                        int[] next = new int[]{neighbor[0], neighbor[1] + curTime};
+                        pq.offer(next);
+                    }
                 }
             }
         }
-
-        return N == 0 ? maxTime : -1;
+        return cnt == 0 ? endTime : -1;
     }
 }
