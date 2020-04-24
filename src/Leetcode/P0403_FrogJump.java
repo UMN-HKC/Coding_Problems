@@ -5,7 +5,7 @@ import java.util.*;
 public class P0403_FrogJump {
 
     // approach 1: hashmap
-    
+
     // the basic idea is to start from first stone and populate next stones where
     // the frog can jump to from the current stone with all the steps it can take
     // at next stones.
