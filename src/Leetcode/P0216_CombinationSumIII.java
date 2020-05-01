@@ -7,7 +7,10 @@ public class P0216_CombinationSumIII {
 
     // initial approach: dfs
 
-    // time: O((9!/(k! * (9 - k)!)) * k)   (select k numbers, slightly different from I and II)
+    // time: C(9, k) * k => O((9!/(k! * (9 - k)!)) * k)
+    // select k numbers, slightly different from I and II. In this case, we are not
+    // adding all C(9, 1), C(9, 2), C(9, 3)... which would result in O(2^9). In here,
+    // we only need C(9, k)
     // space: O(k)  stack space
 
     public List<List<Integer>> combinationSum3(int k, int n) {

@@ -7,7 +7,7 @@ public class P0077_Combinations {
 
     // initial approach: dfs
 
-    // time: O(C(n,k)) = O((n!/(k! * (n - k)!)) * k)
+    // time: O(2^k * k)
     // here we multiply a k because each time we find an answer, we copy our result once
     // space: O(k) = stack space
 
@@ -31,7 +31,7 @@ public class P0077_Combinations {
     }
 
     // approach 2: choose or not choose
-    // time: O(2^k)
+    // time: O(2^k * k)
     // space: O(k)
 
     public List<List<Integer>> combine(int n, int k) {

@@ -41,8 +41,9 @@ public class P0031_NextPermutation {
         }
     }
 
-    // optimize space
-    // simply reversing the subarray is enough
+    // optimize time
+    // simply reversing the subarray is enough since the subarray to reverse
+    // is monotonically decreasing or not increasing
 
     // time: O(n)
     // space: O(1)
