@@ -60,4 +60,54 @@ public class P0173_BinarySearchTreeIterator {
             node = node.left;
         }
     }
+
+    // approach 3: Morris Traversal
+    
+    // time: O(n)
+    // space: O(1)
+
+    TreeNode cur;
+    public BSTIterator(TreeNode root) {
+        cur = root;
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        int res = 0;
+        if (cur.left == null) {
+            res = cur.val;
+        }
+        else {
+            while (cur.left != null) {
+                if (connectOrDisconnectPre(cur.left)) {
+                    cur = cur.left;
+                }
+                else {
+                    break;
+                }
+
+            }
+            res = cur.val;
+        }
+        cur = cur.right;
+        return res;
+    }
+    private boolean connectOrDisconnectPre(TreeNode node) {
+        while (node.right != null && node.right != cur) {
+            node = node.right;
+        }
+        if (node.right == cur) {
+            node.right = null;
+            return false;
+        }
+        else {
+            node.right = cur;
+            return true;
+        }
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return cur != null;
+    }
 }

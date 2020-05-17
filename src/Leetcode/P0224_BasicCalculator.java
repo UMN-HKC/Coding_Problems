@@ -1,5 +1,6 @@
 package Leetcode;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -64,39 +65,48 @@ public class P0224_BasicCalculator {
     }
 
     // approach 2: stack (linear)
+    // use a variable to keep track of the global result. Treat everything within bracket as its own
+    // context and each context will be stored in the stack until we hit the closing bracket.
+    // When open bracket, we push the previous context result to the stack, and push the sign before
+    // the next context to the stack as well.
 
     public int calculate(String s) {
-        Stack<Integer> stack = new Stack<>();
-        int num = 0, sign = 1, res = 0;
-        for (int i = 0; i < s.length(); i++) {
+        if (s == null || s.length() == 0) return 0;
+        Deque<Integer> stack = new ArrayDeque<>();
+        int i = 0;
+        int sign = 1;
+        int num = 0;
+        int res = 0;
+
+        while (i < s.length()) {
             char c = s.charAt(i);
-            if (c >= '0' && c <= '9') {
+            if (Character.isDigit(c)) {
                 num = num * 10 + (c - '0');
             }
-            else if (c == '+' || c == '-') {
-                res += sign * num;
-                num = 0;
-                sign = c == '+' ? 1 : -1;
-            }
             else if (c == '(') {
-                // wrap up the last context and push to stack for later use
-                // and remember to reset res = 0 for new context calculation
                 stack.push(res);
                 stack.push(sign);
-                res = 0;
                 num = 0;
+                res = 0;
                 sign = 1;
             }
             else if (c == ')') {
-                res += sign * num;
+                res += num * sign;
                 res *= stack.pop();
                 res += stack.pop();
                 num = 0;
                 sign = 1;
             }
+            else if (c == '+' || c == '-') {
+                res += sign * num;
+                sign = c == '+' ? 1 : -1;
+                num = 0;
+            }
+            i++;
         }
-        // check
-        if (num != 0) res += sign * num;
+        if (num != 0) {
+            res += num * sign;
+        }
         return res;
     }
 }

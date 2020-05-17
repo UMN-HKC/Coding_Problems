@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 public class P1439_FindTheKthSmallestSumOfAMatrixWithSortedRows {
 
     // approach 1: bfs + heap
-    
+
     // The basic idea is that we will do bfs on each level to get the all summation options to this
     // level so far. We will only include the first k smaller options storing in a min heap, because
     // we know that the rest of bigger summation options will never be used since we only care about the

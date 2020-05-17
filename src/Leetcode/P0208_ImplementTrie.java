@@ -1,5 +1,7 @@
 package Leetcode;
 
+import java.util.Comparator;
+
 public class P0208_ImplementTrie {
 
     // approach 1: 实现题

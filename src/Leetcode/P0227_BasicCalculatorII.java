@@ -50,37 +50,46 @@ public class P0227_BasicCalculatorII {
     }
 
     // approach 2: similar approach but without stack
-    public int calculate_no_stack(String s) {
-        int num = 0, pre = 0, res = 0;
-        char sign = '+';
+    
+    public int calculate_2(String s) {
+        if (s == null || s.length() == 0) return 0;
+        int num = 0;
+        int temp = 0;
+        int res = 0;
+        char lastSign = '+';
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (Character.isDigit(c)) {
-                num = num * 10 + c - '0';
+                num = num * 10 + (c - '0');
             }
-            // if c is a sign or c is the last character in our string
-            // we need to either treat the sign or deal with the last number
-            // Our if condition guarantees these two cases and also skip space
-            if ((!Character.isDigit(c) && c != ' ') || i == s.length() - 1) {
-                if (sign == '+') {
-                    res += pre;
-                    pre = num;
+            // when c is a sign or i is the last index
+            if ((!Character.isDigit(c)) && (c != ' ') || (i == s.length() - 1)){
+                //       ls   sign
+                // (....) - 32 * (...)
+                // when the ls is "+" or "-", we know that we have finished
+                // a potential series of "+-*/" operations, so we add that previous result
+                // to final result, and reassign current number to temp as starting point of
+                // next series of "+-*/" operations
+                //
+                if (lastSign == '+') {
+                    res += temp;
+                    temp = num;
                 }
-                else if (sign == '-') {
-                    res += pre;
-                    pre = -num;
+                else if (lastSign == '-') {
+                    res += temp;
+                    temp = -num;
                 }
-                else if (sign == '*') {
-                    pre *= num;
+                else if (lastSign == '*') {
+                    temp *= num;
                 }
                 else {
-                    pre /= num;
+                    temp /= num;
                 }
-                sign = c;
                 num = 0;
+                lastSign = c;
             }
         }
-        // remember to add pre to result 
-        return res + pre;
+        if (temp != 0) res += temp;
+        return res;
     }
 }
