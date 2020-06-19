@@ -1,6 +1,11 @@
 package Leetcode;
 
 public class P0275_HIdexII {
+
+    // approach 1: binary search
+    // There are 2 cases: th anser is in the array or the answer is not in the array
+    // https://www.youtube.com/watch?v=CjKJDloMnwE
+String
     public int hIndex(int[] citations) {
         if (citations == null || citations.length == 0) {
             return 0;

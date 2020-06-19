@@ -24,4 +24,10 @@ public class P0231_PowerOfTwo {
     public boolean isPowerOfTwo_2(int n) {
         return n > 0 && (n & (-n)) == n;
     }
+
+    // approach 3: remove right-most bit
+    public boolean isPowerOfTwo_3(int n) {
+        if (n <= 0) return false;
+        return (n & (n - 1)) == 0;
+    }
 }

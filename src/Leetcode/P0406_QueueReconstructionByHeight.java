@@ -41,6 +41,7 @@ public class P0406_QueueReconstructionByHeight {
     // space: O(n)
 
     public int[][] reconstructQueue_2(int[][] people) {
+
         int n = people.length;
         int[][] indexAndRestJumps = new int[n][2];
         for (int i = 0; i < n; i++) {

@@ -41,4 +41,63 @@ public class P0073_SetMatrixZeroes {
         }
         return;
     }
+
+    // approach 2: similar but more intuitive to me
+    // The idea is to use the first row to store the metadata about if
+    // a specific column should be set to 0s. But before we do that, we traverse
+    // the first row first to preserve the information about whether the first
+    // row should be set to zero so that later when we override the data in the
+    // first row, we have already preserved that information.
+    // While we traverse each row, we record if we need to set this row to 0s
+    // by keeping a flag. After traversing each row, we update this row(setting 0s) according to our flag.
+    // Finally, we use the first row's meta data we preserved earlier to set the first row.
+
+    public void setZeroes_2(int[][] matrix) {
+        if (matrix == null || matrix[0].length == 0) {
+            return;
+        }
+        int m = matrix.length, n = matrix[0].length;
+        // since we will be modifying first row, preserve
+        // the first row infiormation first
+        boolean hasZeroFirstRow = false;
+        for (int i = 0; i < n; i++) {
+            if (matrix[0][i] == 0) {
+                hasZeroFirstRow = true;
+            }
+        }
+        // set first row at this column to 0
+        // if this column at current row is 0
+        for (int i = 1; i < m; i++) {
+            boolean hasZeroThisRow = false;
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[0][j] = 0;
+                    hasZeroThisRow = true;
+                }
+            }
+            // update current row
+            if (hasZeroThisRow) {
+                for (int j = 0; j < n; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        // use information stored in the first row
+        // to update each column
+        for (int i = 0; i < n; i++) {
+            if (matrix[0][i] == 0) {
+                for (int j = 0; j < m; j++) {
+                    matrix[j][i] = 0;
+                }
+            }
+        }
+        // update first row itself
+        if (hasZeroFirstRow) {
+            for (int i = 0; i < n; i++) {
+                matrix[0][i] = 0;
+            }
+        }
+    }
+
+
 }

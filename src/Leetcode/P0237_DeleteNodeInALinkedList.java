@@ -9,6 +9,7 @@ public class P0237_DeleteNodeInALinkedList {
     // node's value to the end node and delete the end node.
 
     public void deleteNode(ListNode node) {
+
         while (node.next != null && node.next.next != null) {
             int temp = node.next.val;
             node.next.val = node.val;

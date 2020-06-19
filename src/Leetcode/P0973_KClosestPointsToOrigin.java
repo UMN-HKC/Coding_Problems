@@ -1,5 +1,6 @@
 package Leetcode;
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class P0973_KClosestPointsToOrigin {
 
@@ -36,88 +37,53 @@ public class P0973_KClosestPointsToOrigin {
     }
 
 
-    // approach 2: quick sort (23 ms)
-
-    // time: O(nlogn) average and O(n^2) worst
-    // space: O(1)
-
-    public int[][] kClosest_2(int[][] points, int K) {
-        quickSort(points, 0, points.length - 1);
-        return Arrays.copyOf(points, K);
-    }
-    public void quickSort(int[][] points, int l, int r) {
-
-        if (l < r) {
-            int m = partition(points, l, r);
-            quickSort(points, l, m - 1);
-            quickSort(points, m+1, r);
-        }
-    }
-    public int partition(int[][] points, int l, int r) {
-        int pivot = r;
-        int i = l-1, j = l;
-        while (j < r) {
-            if (isCloser(points[j], points[pivot])) {
-                i++;
-                swap(points, i, j);
-            }
-            j++;
-        }
-        i++;
-        swap(points, i, pivot);
-        return i;
-    }
-    public void swap(int[][] points, int l, int r) {
-        int[] temp = points[l];
-        points[l] = points[r];
-        points[r] = temp;
-    }
-    public boolean isCloser(int[] a, int[] b) {
-        double lenA = Math.sqrt(Math.pow(a[0], 2) + Math.pow(a[1], 2));
-        double lenB = Math.sqrt(Math.pow(b[0], 2) + Math.pow(b[1], 2));
-        return lenA < lenB;
-    }
-
-    // approach 3: quick select (7 ms)
+    // approach 2: quick select (7 ms)
 
     // time O(n) average and O(n^2) worst case
     // space: O(1)
 
     public int[][] kClosest_3(int[][] points, int K) {
+        K--;
+        int p = -1;
         int l = 0, r = points.length - 1;
-        while (l <= r) {
-            int m = partition(points, l, r);
-            if (m == K) {
-                break;
-            }
-            else if (m < K) {
-                l = m + 1;
+        while ((p = partition(points, l, r)) != K) {
+            if (p < K) {
+                l = p + 1;
             }
             else {
-                r = m - 1;
+                r = p - 1;
             }
         }
-        return Arrays.copyOf(points, K);
+        // just to practice java 8 stream 
+        return IntStream.range(0, K + 1).boxed().map(i -> points[i]).toArray(int[][]::new);
     }
-    public int partition(int[][] points, int l, int r) {
-        int i = l - 1, j = l, pivot = r;
-        while (j < pivot) {
-            if (isCloser(points[j], points[pivot])) {
-                i++;
+    private int partition(int[][] points, int l, int r) {
+        Random random = new Random();
+        int pivot = random.nextInt(r - l + 1) + l;
+        double pivotDist = getDistance(points, pivot);
+        swap(points, pivot, r);
+        int i = l, j = l;
+
+        while (j < r) {
+            if (getDistance(points, j) <= pivotDist) {
                 swap(points, i, j);
+                i++;
+                j++;
             }
-            j++;
+            else {
+                j++;
+            }
         }
-        i++;
-        swap(points, i, pivot);
+        swap(points, i, r);
         return i;
     }
-    public void swap(int[][] points, int l, int r) {
+    private double getDistance(int[][] points, int idx) {
+        return Math.sqrt(Math.pow(points[idx][0], 2)
+                + Math.pow(points[idx][1], 2));
+    }
+    private void swap(int[][] points, int l, int r) {
         int[] temp = points[l];
         points[l] = points[r];
         points[r] = temp;
-    }
-    public boolean isCloser(int[] a, int[] b) {
-        return Math.sqrt(a[0] * a[0] + a[1] * a[1]) <  Math.sqrt(b[0] * b[0] + b[1] * b[1]);
     }
 }
