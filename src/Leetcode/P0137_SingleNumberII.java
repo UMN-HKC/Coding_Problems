@@ -20,4 +20,24 @@ public class P0137_SingleNumberII {
         }
         return ones;
     }
+
+    // approach 2: easier to understand and explain
+    // https://www.youtube.com/watch?v=puXcQpwgcD0
+    // https://www.youtube.com/watch?v=ZbTXZ2_YAgI
+
+    // still O(n) solution
+
+    public int singleNumber_2(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < 32; i++) {
+            int sum = 0;
+            for (int num : nums) {
+                sum += (num >> i) & 1;
+            }
+            sum %= 3;
+            res = res | (sum << i);
+        }
+        return res;
+    }
+
 }

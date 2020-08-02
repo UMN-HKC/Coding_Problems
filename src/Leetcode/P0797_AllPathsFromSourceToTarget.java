@@ -8,6 +8,10 @@ public class P0797_AllPathsFromSourceToTarget {
     // approach 1: dfs
     // since it is a DAG, just dfs and no need to use boolean[] visited
 
+    // time: O((2^n) * n)
+    // space: O((2^n) * n)
+    // https://leetcode.com/articles/all-paths-from-source-to-target/
+
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         List<List<Integer>> res = new ArrayList<>();
         int n = graph.length;
