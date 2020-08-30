@@ -4,6 +4,14 @@ public class P1103_DistributeCandiesToPeople {
 
     // initial approach: brute force
 
+    // time:
+    // Assume there are give times distribution such that 1 + 2 + ... + give >= candies. Therefore,
+    // (1 + give) * give / 2 >= candies, and when give is big enough, (give + 1) * give /2 ~ candies. We have:
+    // 1/2 * give ^ 2 < 1/2 * (give ^ 2 + give)  < 1/ 2 * (give + 1) ^ 2
+    // then
+    // 1/2 * give ^ 2 < candies < 1/ 2 * (give + 1) ^ 2
+    // Time: O(sqrt(candies)), space: O(num_people).
+
     public int[] distributeCandies(int candies, int num_people) {
         int[] res = new int[num_people];
         int give = 1;
