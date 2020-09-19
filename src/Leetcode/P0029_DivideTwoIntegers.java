@@ -10,17 +10,25 @@ public class P0029_DivideTwoIntegers {
     // and the fact that the negative of Integer.MIN_VALUE is itself
 
     public int divide(int dividend, int divisor) {
-        if (dividend == 1 << 31 && divisor == -1) return (1 << 31) - 1;
-        int quotient = 0, x = 0;
-        int a = Math.abs(dividend);
-        int b = Math.abs(divisor);
-        while (a - b >= 0) {
-            // '<< 1' in the for loop is to deal with
-            for (x = 0; a - (b << x << 1) >= 0; x++);
-            quotient += 1 << x;
-            a -= b << x;
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
         }
-        return (dividend > 0) == (divisor > 0) ? quotient : -quotient;
+        int abDividend = Math.abs(dividend);
+        int abDivisor = Math.abs(divisor);
+        boolean isNegative = (dividend > 0) ^ (divisor > 0);
+        int quotient = 0;
+
+        while (abDividend - abDivisor >= 0) {
+            int temp = abDivisor;
+            int cnt = 1;
+            while (abDividend - (temp << 1) >= 0) {
+                temp <<= 1;
+                cnt <<= 1;
+            }
+            abDividend -= temp;
+            quotient += cnt;
+        }
+        return isNegative ? -quotient : quotient;
     }
 
     // approach 2: binary search

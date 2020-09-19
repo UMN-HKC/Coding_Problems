@@ -6,45 +6,61 @@ public class P0685_RedundantConnectionII {
     // really good explanation in Chinese:
     // https://leetcode.com/problems/redundant-connection-ii/discuss/278105/topic
 
+    // 1. union find过程中有发现入度为2的node
+    //  1.1: 如果在过程中跳过合并之后还有遇到环（lastEdgeCauseCycle != null），返回edge1
+    //  1.2: 如果在过程中跳过合并之后没有环， 返回edge2
+    // 2. union find过程中没有发现入度为2的node，说明我们的root也在环内，这时候返回环内的任何一条edge
+    //    都行，所以我们就返回lastEdgeCauseCycle。
+
+    private int[] parent;
+    private int[] ids;
     public int[] findRedundantDirectedConnection(int[][] edges) {
         int n = edges.length;
-        int[] root = new int[n + 1];
-        int[] uf = new int[n + 1];
-        int[] edge1 = new int[2];
-        int[] edge2 = new int[2];
-        int[] edgeCauseCycle = new int[2];
+        parent = new int[n + 1];
+        ids = new int[n + 1];
+        int[] firstEdge = null;
+        int[] secondEdge = null;
+        int[] lastEdgeCausingCycle = null;
 
-        for (int i = 1; i < uf.length; i++) {
-            uf[i] = i;
-        }
-
-        for (int[] edge : edges) {
-            int from = edge[0];
-            int to = edge[1];
-            if (root[to] == 0) {
-                root[to] = from;
-                int pFrom = find(uf, from);
-                int pTo = find(uf, to);
-                if (pFrom == pTo) {
-                    edgeCauseCycle = edge;
-                }
-                else {
-                    uf[pFrom] = pTo;
-                }
+        for (int i = 0; i < n; i++) {
+            int from = edges[i][0];
+            int to = edges[i][1];
+            if (ids[from] == 0) {
+                ids[from] = from;
+            }
+            if (ids[to] == 0) {
+                ids[to] = to;
+            }
+            // this node has 2 parents
+            if (parent[to] != 0) {
+                firstEdge = new int[2];
+                firstEdge[0] = parent[to];
+                firstEdge[1] = to;
+                secondEdge = edges[i];
             }
             else {
-                edge1[0] = root[to];
-                edge1[1] = to;
-                edge2 = edge;
+                parent[to] = from;
+                int pFrom = find(from);
+                int pTo = find(to);
+                if (pFrom == pTo) {
+                    lastEdgeCausingCycle = edges[i];
+                }
+                else {
+                    ids[pFrom] = pTo;
+                }
             }
         }
-        if (edge1[0] != 0 && edge2[0] != 0) return edgeCauseCycle[0] == 0 ? edge2 : edge1;
-        return edgeCauseCycle;
+        if (firstEdge != null) {
+            return lastEdgeCausingCycle == null ? secondEdge : firstEdge;
+        }
+        else {
+            return lastEdgeCausingCycle;
+        }
     }
-    public static int find(int[] uf, int p) {
-        while (uf[p] != p) {
-            uf[p] = uf[uf[p]];
-            p = uf[p];
+    private int find(int p) {
+        while (ids[p] != p) {
+            ids[p] = ids[ids[p]];
+            p = ids[p];
         }
         return p;
     }
